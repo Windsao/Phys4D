@@ -1,0 +1,8 @@
+env_string: BallInBasketEnv-V0
+defaults:
+  - env: ball_in_basket_env
+  - camera_global_planner: default
+  - camera_atomic_skill: ball_in_basket_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: ball_in_basket_record
+  - task: default

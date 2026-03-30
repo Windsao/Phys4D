@@ -1,0 +1,105 @@
+
+
+light:
+  key_light:
+    types: ["Rect"]
+    common:
+
+      initial_pos_range: [-0.02, 1.0, 0.4, -0.02, 1.0, 0.4]
+      initial_ori_range: [30.0, 1.0, 180.0, 30.0, 1.0, 180.0]
+      color_temperature_range: [8000000, 8000000]
+      color_range: [[0.9, 0.9, 0.9], [1.1, 1.1, 1.1]]
+    Rect:
+
+      intensity_range: [1e8, 1e8]
+      width_range: [0.01,0.01]
+      height_range: [0.01, 0.01]
+
+objects:
+
+  desk_surface:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/desk.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [5.0, 3.0, 0.1]
+    desk_surface_1:
+      pos: [0.0, 0.0, 0.0]
+      ori: [0.0, 0.0, 0.0]
+      scale: [5.0, 3.0, 0.1]
+      visual:
+        visible: true
+        color:
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.5
+          restitution: 0.5
+
+
+  rotating_cylinder:
+    usd: ["Cylinder"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.5, 0.5, 0.18]
+    rotating_cylinder_1:
+      pos: [0.0, 0.15, 0.18]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [0.00, 0.00, 0.00]
+      physics:
+        type: "dynamic"
+        mass: 1.0
+        linear_velocity: [0.0, 0.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.1
+      controller:
+        initial_angle_deg: 0.0
+
+
+  sculpture_on_cylinder:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/sculpture.usd"]
+    random: false
+    num_per_env: 1
+    sculpture_on_cylinder_1:
+      pos: [0.0, 0.15, 0.3]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+        scale: [1.0, 1.0, 1.0]
+        visual_material:
+          mdl_folder: "/home/user/magicsim/MagicSim/Assets/Material/Base/Paint"
+      physics:
+        type: "dynamic"
+        mass: 0.2
+        linear_velocity: [0.0, 0.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.1
+
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [8.0, 0.08, 3.0]
+    background_wall_1:
+      pos: [0.1, -0.3, 1.3]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [1.0, 1.0, 1.0]
+      physics:
+        type: "geometry"

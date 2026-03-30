@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_ball_rolls_on_glass_env
+  - sim: sim_config
+  - camera: ball_rolls_on_glass_camera

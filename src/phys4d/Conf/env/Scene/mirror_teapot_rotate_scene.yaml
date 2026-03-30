@@ -1,0 +1,4 @@
+defaults:
+  - scene: mirror_teapot_rotate_env
+  - sim: sim_config
+  - camera: mirror_teapot_rotate_camera

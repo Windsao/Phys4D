@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_potato_in_water_env
+  - sim: sim_config
+  - camera: potato_in_water_camera

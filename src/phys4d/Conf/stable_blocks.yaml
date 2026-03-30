@@ -1,0 +1,8 @@
+env_string: StableBlocksEnv-V0
+defaults:
+  - env: stable_blocks_env
+  - camera_global_planner: default
+  - camera_atomic_skill: stable_blocks_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: stable_blocks_record
+  - task: default

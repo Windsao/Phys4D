@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_ball_train_env
+  - sim: sim_config
+  - camera: ball_train_camera

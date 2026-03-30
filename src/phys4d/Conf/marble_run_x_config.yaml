@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_marble_run_x_env
+  - sim: sim_config
+  - camera: marble_run_x_camera

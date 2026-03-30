@@ -1,0 +1,7 @@
+GoTo:
+  use_absolute: true
+  absolute_pos: [-1.5, -0.3, 1.8]
+  absolute_orientation: [0.0, 0.0, -90.0]
+
+  position_offset: [0.0, 0.0, 0.2]
+  orientation: [0.0, 0.0, 0.0]

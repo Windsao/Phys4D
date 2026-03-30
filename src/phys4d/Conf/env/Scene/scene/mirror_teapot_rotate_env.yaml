@@ -1,0 +1,145 @@
+
+
+
+
+light:
+  key_light:
+    types: ["Dome"]
+    common:
+
+      initial_pos_range: [-0.02, 0.7, 0.2, -0.02, 0.7, 0.2]
+      initial_ori_range: [30.0, -3.0, -178.0, 30.0, 1.0, -182.0]
+      color_temperature_range: [7200, 7600]
+      color_range: [[0.9, 0.9, 0.9], [1.1, 1.1, 1.1]]
+    Dome:
+
+      intensity_range: [1400, 1800]
+      radius_range: [8.0, 12.0]
+
+
+
+
+
+
+
+
+
+
+
+
+objects:
+
+  desk_surface:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/desk.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [5.0, 3.0, 0.1]
+    desk_surface_1:
+      pos: [0.0, 0.0, 0.0]
+      ori: [0.0, 0.0, 0.0]
+      scale: [5.0, 3.0, 0.1]
+      visual:
+        visible: true
+        color:
+
+
+
+
+
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.5
+          restitution: 0.5
+
+
+  rotating_cylinder:
+    usd: ["Cylinder"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.5, 0.5, 0.18]
+    rotating_cylinder_1:
+      pos: [0.0, 0.15, 0.18]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          [0.00, 0.00, 0.00]
+
+
+
+
+
+      physics:
+        type: "dynamic"
+        mass: 1.0
+        linear_velocity: [0.0, 0.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.1
+      controller:
+        initial_angle_deg: 0.0
+
+
+  teapot_on_cylinder:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/teapot.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [1.0, 1.0, 1.0]
+    teapot_on_cylinder_1:
+      pos: [0.0, 0.15, 0.32]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        scale: [1.0, 1.0, 1.0]
+      physics:
+        type: "dynamic"
+        mass: 0.1
+        linear_velocity: [0.0, 0.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.1
+
+  mirror:
+      usd: ["/home/user/phys4d/Phys4D/Assets/Scene/mirror2.usd"]
+      random: false
+      num_per_env: 1
+      common:
+        primitive_scale: [1.0, 1.0, 1.0]
+      mirror_1:
+        pos: [-0.4, 0.3, 0.5]
+        ori: [0.0, 90.0, 0.0]
+        visual:
+          visible: true
+          scale: [3.0, 1.5, 1.0]
+        physics:
+          type: "geometry"
+          collision: true
+          physics_material:
+            static_friction: 0.5
+            dynamic_friction: 0.4
+            restitution: 0.2
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [6.0, 0.08, 2.5]
+    background_wall_1:
+      pos: [0.1, -0.3, 1.3]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [1.0,1.0,1.0]
+      physics:
+        type: "geometry"

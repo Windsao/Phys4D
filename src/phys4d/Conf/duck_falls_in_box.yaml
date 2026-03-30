@@ -1,0 +1,8 @@
+env_string: DuckFallsInBoxEnv-V0
+defaults:
+  - env: duck_falls_in_box_env
+  - camera_global_planner: default
+  - camera_atomic_skill: duck_falls_in_box_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: duck_falls_in_box_record
+  - task: default

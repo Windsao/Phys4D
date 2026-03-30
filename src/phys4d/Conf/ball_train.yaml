@@ -1,0 +1,8 @@
+env_string: BallTrainEnv-V0
+defaults:
+  - env: ball_train_env
+  - camera_global_planner: default
+  - camera_atomic_skill: ball_train_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: ball_train_record
+  - task: default

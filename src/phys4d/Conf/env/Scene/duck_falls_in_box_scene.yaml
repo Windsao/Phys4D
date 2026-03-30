@@ -1,0 +1,4 @@
+defaults:
+  - scene: duck_falls_in_box_env
+  - sim: sim_config
+  - camera: duck_falls_in_box_camera

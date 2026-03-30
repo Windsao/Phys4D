@@ -1,0 +1,4 @@
+defaults:
+  - scene: rotor_gs_env
+  - sim: sim_config
+  - camera: rotor_gs_camera

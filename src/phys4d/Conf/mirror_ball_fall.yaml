@@ -1,0 +1,8 @@
+env_string: MirrorBallFallEnv-V0
+defaults:
+  - env: mirror_ball_fall_env
+  - camera_global_planner: default
+  - camera_atomic_skill: mirror_ball_fall_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: mirror_ball_fall_record
+  - task: default

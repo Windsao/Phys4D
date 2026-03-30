@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_duck_and_domino_env
+  - sim: sim_config
+  - camera: duck_and_domino_camera

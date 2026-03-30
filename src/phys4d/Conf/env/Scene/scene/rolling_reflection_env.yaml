@@ -1,0 +1,145 @@
+
+
+
+
+light:
+
+
+
+
+
+
+
+
+
+
+
+  rim_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [-0.5, 1.2, 1.2, 0.5, 1.4, 1.8]
+      initial_ori_range: [-15.0, -15.0, -15.0, 15.0, 15.0, 15.0]
+      color_temperature_range: [5200, 6200]
+      color_range: [[0.8, 0.8, 0.8], [1.0, 1.0, 1.0]]
+    Sphere:
+      intensity_range: [3500, 4500]
+      radius_range: [0.12, 0.18]
+
+objects:
+
+  desk_surface:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Desk/Collected_willowbench/willowbench_inst_base.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [2.0, 1.0, 1.0]
+    desk_surface_1:
+      pos: [-0.5, 0.0, 0.0]
+      ori: [0.0, 0.0, 90.0]
+      visual:
+        visible: true
+        color:
+          - [2.00, 0.75, 0.00]
+          - [2.40, 0.60, 0.00]
+          - [2.20, 0.75, 0.00]
+          - [1.80, 0.45, 0.00]
+          - [1.20, 0.30, 0.00]
+        scale: [2.0, 2.0, 1.0]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.0
+          dynamic_friction: 0.0
+          restitution: 0.0
+
+
+  dumbell:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/dumbell.usd"]
+    random: false
+    num_per_env: 1
+    dumbell_1:
+      pos: [-0.3, 0.0, 0.95]
+      ori: [0.0, 0.0, 30.0]
+      visual:
+        visible: true
+        scale: [2.0, 2.0, 2.0]
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.4
+          restitution: 0.2
+
+
+  rolling_ball:
+    usd: ["Sphere"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.15, 0.15, 0.15]
+    rolling_ball_1:
+      pos: [-1.0, -0.5, 1.0]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "dynamic"
+        mass: 0.5
+        linear_velocity: [2.5, 1.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.0
+          dynamic_friction: 0.0
+          restitution: 0.0
+
+  mirror:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/mirror.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [1.0, 1.0, 1.0]
+    mirror_1:
+      pos: [0.3, 0.0, 0.5]
+      ori: [0.0, 0.0, -90.0]
+      visual:
+        visible: true
+        scale: [2.0, 1.0, 1.0]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.4
+          restitution: 0.2
+
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.05, 10.0, 6.0]
+    background_wall_1:
+      pos: [1.0, 0.25, 1.5]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [0.95, 0.7, 0.5]
+      physics:
+        type: "geometry"

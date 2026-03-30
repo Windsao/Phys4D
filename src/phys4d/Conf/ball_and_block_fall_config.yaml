@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_ball_and_block_fall_env
+  - sim: sim_config
+  - camera: ball_and_block_fall_camera

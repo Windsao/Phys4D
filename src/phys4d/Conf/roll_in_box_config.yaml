@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_roll_in_box_env
+  - sim: sim_config
+  - camera: roll_in_box_camera

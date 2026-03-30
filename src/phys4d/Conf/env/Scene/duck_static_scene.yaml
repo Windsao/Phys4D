@@ -1,0 +1,4 @@
+defaults:
+  - scene: duck_static_env
+  - sim: sim_config
+  - camera: duck_static_camera

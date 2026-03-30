@@ -1,0 +1,4 @@
+defaults:
+  - scene: roll_front_box_env
+  - sim: sim_config
+  - camera: roll_front_box_camera

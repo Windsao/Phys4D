@@ -1,0 +1,103 @@
+background:
+  intensity: [1500, 2000]
+  texture: ["/home/user/phys4d/Phys4D/Assets/Background/moonlit_golf_4k.hdr"]
+
+light:
+  key_light:
+    types: ["Rect"]
+    common:
+      initial_pos_range: [-0.5, -1.0, 1.2, 0.5, -0.8, 1.6]
+      initial_ori_range: [-40.0, -10.0, -15.0, -20.0, 10.0, 15.0]
+      color_temperature_range: [4200, 5200]
+      color_range: [[0.9, 0.9, 0.9], [1.1, 1.1, 1.1]]
+    Rect:
+      intensity_range: [2500, 3200]
+      width_range: [1.0, 1.2]
+      height_range: [0.8, 1.0]
+  rim_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [-0.5, 1.2, 1.2, 0.5, 1.4, 1.8]
+      initial_ori_range: [-15.0, -15.0, -15.0, 15.0, 15.0, 15.0]
+      color_temperature_range: [5200, 6200]
+      color_range: [[0.8, 0.8, 0.8], [1.0, 1.0, 1.0]]
+    Sphere:
+      intensity_range: [3500, 4500]
+      radius_range: [0.12, 0.18]
+
+objects:
+  duck:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/duck.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      scale: [1.5, 1.5, 1.5]
+    duck_1:
+      pos: [-0.3, 0.0, 2.0]
+      ori: [0.0, 0.0, 0.0]
+      physics:
+        type: "dynamic"
+        mass: 0.3
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.4
+          restitution: 0.2
+
+  box:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/box.usd"]
+    random: false
+    num_per_env: 1
+    common:
+    box_1:
+      pos: [-0.3, 0.0, 0.8]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [0.25, 0.50, 0.25]
+        scale: [1.5, 1.5, 2.5]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.5
+          restitution: 0.1
+
+  desk_surface:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Desk/Collected_willowbench/willowbench_inst_base.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [2.0, 1.0, 1.0]
+    desk_surface_1:
+      pos: [-0.3, 0.0, 0.0]
+      ori: [0.0, 0.0, 90.0]
+      scale: [2.0, 1.5, 1.0]
+      visual:
+        visible: true
+        color:
+        visual_material:
+          material_usd_folder: "/home/user/phys4d/Phys4D/Assets/Material/Wood"
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.0
+          dynamic_friction: 0.0
+          restitution: 0.0
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [10.0, 0.05, 6.0]
+    background_wall_1:
+      pos: [-1.5, 0.5, 1.5]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [1.0, 1.0, 1.0]
+      physics:
+        type: "geometry"

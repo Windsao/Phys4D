@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_two_balls_pass_env
+  - sim: sim_config
+  - camera: two_balls_pass_camera

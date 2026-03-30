@@ -1,0 +1,8 @@
+env_string: WeightOnCeramicEnv-V0
+defaults:
+  - env: weight_on_ceramic_env
+  - camera_global_planner: default
+  - camera_atomic_skill: weight_on_ceramic_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: weight_on_ceramic_record
+  - task: default

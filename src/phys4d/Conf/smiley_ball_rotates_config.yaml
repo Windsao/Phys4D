@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_smiley_ball_rotates_env
+  - sim: sim_config
+  - camera: smiley_ball_rotates_camera

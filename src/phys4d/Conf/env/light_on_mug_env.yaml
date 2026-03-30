@@ -1,0 +1,7 @@
+defaults:
+  - Scene: light_on_mug_scene
+  - Observation: empty_observation
+  - Reward: empty_reward
+  - Termination: empty_termination
+
+output_dir: "/home/user/phys4d/Phys4D/TestOutput/test_light_on_mug_env"

@@ -1,0 +1,8 @@
+env_string: MirrorTeapotRotateEnv-V0
+defaults:
+  - env: mirror_teapot_rotate_env
+  - camera_global_planner: default
+  - camera_atomic_skill: mirror_teapot_rotate_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: mirror_teapot_rotate_record
+  - task: default

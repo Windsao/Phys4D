@@ -1,0 +1,4 @@
+defaults:
+  - scene: ball_collide_env
+  - sim: sim_config
+  - camera: ball_collide_camera

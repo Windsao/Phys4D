@@ -1,0 +1,47 @@
+output_dir: "/home/user/phys4d/Phys4D/TestOutput/test_smiley_ball_rotates_env"
+disable_render_product: False
+render_frame_num: 0
+enable_tiled: False
+colorize_depth: True
+camera0:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+
+    pos: [-2.0, -0.3, 1.8]
+    ori: [0.0, 0.0, -90.0]
+
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    motion_vectors_capture:
+      type: motion_vectors
+      device: cpu
+    distance_to_camera_capture:
+      type: distance_to_camera
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu

@@ -1,0 +1,4 @@
+defaults:
+  - scene: light_on_sculpture_env
+  - sim: sim_config
+  - camera: light_on_sculpture_camera

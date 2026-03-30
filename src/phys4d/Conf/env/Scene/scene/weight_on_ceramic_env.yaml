@@ -1,0 +1,111 @@
+
+
+
+
+light:
+
+
+
+
+
+
+
+
+
+
+
+  rim_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [-0.5, 1.2, 1.2, 0.5, 1.4, 1.8]
+      initial_ori_range: [-15.0, -15.0, -15.0, 15.0, 15.0, 15.0]
+      color_temperature_range: [5200, 6200]
+      color_range: [[0.8, 0.8, 0.8], [1.0, 1.0, 1.0]]
+    Sphere:
+      intensity_range: [3500, 4500]
+      radius_range: [0.12, 0.18]
+
+objects:
+
+  desk_surface:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Desk/Collected_willowbench/willowbench_inst_base.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [2.0, 1.0, 1.0]
+    desk_surface_1:
+      pos: [-0.5, 0.0, 0.0]
+      ori: [0.0, 0.0, 90.0]
+      visual:
+        visible: true
+        color:
+        visual_material:
+          material_usd_folder: "/home/user/phys4d/Phys4D/Assets/Material/Wood"
+        scale: [2.0, 2.0, 1.0]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.0
+          dynamic_friction: 0.0
+          restitution: 0.0
+
+
+  mug:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/mug.usd"]
+    random: false
+    num_per_env: 1
+    mug_1:
+      pos: [-0.2, 0.0, 0.95]
+      ori: [0.0, 0.0, -90.0]
+      visual:
+        visible: true
+        scale: [3.0, 3.0, 3.0]
+        color: [1.00, 0.80, 0.00]
+      physics:
+        type: "dynamic"
+        mass: 0.2
+        linear_velocity: [0.0, 0.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.1
+
+
+  falling_dumbell:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/dumbbell.usd"]
+    random: false
+    num_per_env: 1
+    falling_dumbell_1:
+      pos: [-0.2, 0.0, 1.8]
+      ori: [0.0, 0.0, 90.0]
+      visual:
+        visible: true
+        scale: [1.5, 1.5, 1.5]
+        color:
+      physics:
+        type: "dynamic"
+        mass: 0.5
+        linear_velocity: [0.0, 0.0, 0.0]
+        angular_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.4
+          restitution: 0.2
+
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.05, 10.0, 6.0]
+    background_wall_1:
+      pos: [1.0, 0.25, 1.5]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [1.0, 1.0, 1.0]
+      physics:
+        type: "geometry"

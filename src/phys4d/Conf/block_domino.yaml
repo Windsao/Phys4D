@@ -1,0 +1,8 @@
+env_string: BlockDominoEnv-V0
+defaults:
+  - env: block_domino_env
+  - camera_global_planner: default
+  - camera_atomic_skill: block_domino_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: block_domino_record
+  - task: default

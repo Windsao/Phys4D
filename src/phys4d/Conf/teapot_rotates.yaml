@@ -1,0 +1,8 @@
+env_string: TeapotRotatesEnv-V0
+defaults:
+  - env: teapot_rotates_env
+  - camera_global_planner: default
+  - camera_atomic_skill: teapot_rotates_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: teapot_rotates_record
+  - task: default

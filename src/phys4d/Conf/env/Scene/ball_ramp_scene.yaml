@@ -1,0 +1,4 @@
+defaults:
+  - scene: ball_ramp_env
+  - sim: sim_config
+  - camera: ball_ramp_camera

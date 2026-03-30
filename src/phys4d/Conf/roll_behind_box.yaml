@@ -1,0 +1,8 @@
+env_string: RollBehindBoxEnv-V0
+defaults:
+  - env: roll_behind_box_env
+  - camera_global_planner: default
+  - camera_atomic_skill: roll_behind_box_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: roll_behind_box_record
+  - task: default

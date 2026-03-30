@@ -1,0 +1,4 @@
+defaults:
+  - scene: domino_with_space_env
+  - sim: sim_config
+  - camera: domino_with_space_camera

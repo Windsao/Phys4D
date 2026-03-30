@@ -1,0 +1,4 @@
+defaults:
+  - scene: unstable_block_stack_env
+  - sim: sim_config
+  - camera: unstable_block_stack_camera

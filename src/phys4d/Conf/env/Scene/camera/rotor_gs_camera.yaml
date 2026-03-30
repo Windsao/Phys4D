@@ -1,0 +1,538 @@
+output_dir: "/home/user/phys4d/Phys4D/TestOutput/test_rotor_gs_env"
+disable_render_product: False
+render_frame_num: 1
+enable_tiled: False
+colorize_depth: True
+
+
+
+
+
+
+camera0:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.0, 1.4, 1.1]
+    ori: [-12.0, 0.0, 180.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera1:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.433, 1.332, 1.1]
+    ori: [-12.0, 0.0, 162.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera2:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.823, 1.133, 1.1]
+    ori: [-12.0, 0.0, 144.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera3:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [1.133, 0.823, 1.1]
+    ori: [-12.0, 0.0, 126.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera4:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [1.332, 0.433, 1.1]
+    ori: [-12.0, 0.0, 108.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera5:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [1.4, 0.0, 1.1]
+    ori: [-12.0, 0.0, 90.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera6:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.0, 1.4, 0.35]
+    ori: [-10.0, 0.0, 180.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera7:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.433, 1.332, 0.35]
+    ori: [-10.0, 0.0, 162.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera8:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.823, 1.133, 0.35]
+    ori: [-10.0, 0.0, 144.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera9:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [1.133, 0.823, 0.35]
+    ori: [-10.0, 0.0, 126.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera10:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [1.332, 0.433, 0.35]
+    ori: [-10.0, 0.0, 108.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu
+
+camera11:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [1.4, 0.0, 0.35]
+    ori: [-10.0, 0.0, 90.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "gimbal"
+    params:
+      pos_stiffness: 40.0
+      pos_damping: 8.0
+      rot_stiffness: 10.0
+      rot_damping: 4.0
+      dt: 0.0167
+      pos_target_threshold: 0.05
+      rot_target_threshold_deg: 2.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu

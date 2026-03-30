@@ -1,0 +1,8 @@
+env_string: BallRollsOnGlassEnv-V0
+defaults:
+  - env: ball_rolls_on_glass_env
+  - camera_global_planner: default
+  - camera_atomic_skill: ball_rolls_on_glass_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: ball_rolls_on_glass_record
+  - task: default

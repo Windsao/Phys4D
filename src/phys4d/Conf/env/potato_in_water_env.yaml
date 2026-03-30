@@ -1,0 +1,7 @@
+defaults:
+  - Scene: potato_in_water_scene
+  - Observation: empty_observation
+  - Reward: empty_reward
+  - Termination: empty_termination
+
+output_dir: "/home/user/phys4d/Phys4D/TestOutput/test_potato_in_water_env"

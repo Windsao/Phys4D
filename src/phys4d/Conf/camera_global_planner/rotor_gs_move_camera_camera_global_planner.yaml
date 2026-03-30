@@ -1,0 +1,9 @@
+NavTo:
+  translation_threshold: 0.02
+  rotation_threshold: 0.1
+  visualize_path: false
+  use_navmesh: false
+
+
+
+  always_refresh: true

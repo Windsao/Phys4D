@@ -1,0 +1,4 @@
+defaults:
+  - scene: domino_in_juice_env
+  - sim: sim_config
+  - camera: domino_in_juice_camera

@@ -1,0 +1,4 @@
+defaults:
+  - scene: ball_and_block_env
+  - sim: sim_config
+  - camera: ball_and_block_camera

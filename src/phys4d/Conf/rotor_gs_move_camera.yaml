@@ -1,0 +1,13 @@
+env_string: RotorGsMoveCameraEnv-V0
+defaults:
+  - _self_
+  - env: rotor_gs_move_camera_env
+  - camera_global_planner: rotor_gs_move_camera_camera_global_planner
+  - camera_atomic_skill: rotor_gs_move_camera_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: rotor_gs_move_camera_record
+  - task: default
+
+
+
+use_navto: false

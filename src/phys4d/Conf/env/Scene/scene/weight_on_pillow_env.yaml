@@ -1,0 +1,178 @@
+
+
+
+
+light:
+  key_light:
+    types: ["Rect"]
+    common:
+      initial_pos_range: [-0.5, -1.0, 1.2, 0.5, -0.8, 1.6]
+      initial_ori_range: [-40.0, -10.0, -15.0, -20.0, 10.0, 15.0]
+      color_range: [[0.9, 0.9, 0.9], [1.1, 1.1, 1.1]]
+    Rect:
+      intensity_range: [2500, 3200]
+      width_range: [1.0, 1.2]
+      height_range: [0.8, 1.0]
+  rim_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [-0.5, 1.2, 1.2, 0.5, 1.4, 1.8]
+      initial_ori_range: [-15.0, -15.0, -15.0, 15.0, 15.0, 15.0]
+      color_range: [[0.8, 0.8, 0.8], [1.0, 1.0, 1.0]]
+    Sphere:
+      intensity_range: [3500, 4500]
+      radius_range: [0.12, 0.18]
+
+objects:
+  desk_surface:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [4.8, 2.0, 0.1]
+    desk_surface_1:
+      pos: [0.0, 0.0, 0.0]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [0.85, 0.80, 0.73]
+          - [0.94, 0.76, 0.62]
+          - [0.81, 0.84, 0.66]
+          - [0.72, 0.72, 0.77]
+          - [0.68, 0.64, 0.58]
+      physics:
+        type: "geometry"
+
+  inflatable_cushion:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 2
+    common:
+      primitive_scale: [0.9, 0.9, 0.3]
+      initial_pos_range: [-0.4, -0.2, 0.9, 0.4, 0.2, 0.92]
+      initial_ori_range: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    inflatable_cushion_1:
+      pos: [-0.5, 0.0, 0.2]
+      ori: [0.0, 0.0, 0.0]
+      physics:
+        type: "inflatable"
+        ratio: 1.0
+        particle_system:
+          contact_offset: 0.08
+          rest_offset: 0.020
+        particle_material:
+          friction: 2.0
+        inflatable_config:
+          pressure: 1.0
+          particle_mass: 0.01
+          spring_stretch_stiffness: 1000000.0
+          spring_bend_stiffness: 5000.0
+          spring_shear_stiffness: 5000.0
+          spring_damping: 10.0
+          self_collision: true
+      visual:
+        visible: true
+        color:
+          - [0.85, 0.80, 0.73]
+          - [0.75, 0.70, 0.63]
+          - [0.6, 0.6, 0.0]
+          - [0.0, 0.6, 0.6]
+          - [0.6, 0.0, 0.6]
+
+    inflatable_cushion_2:
+      pos: [0.5, 0.0, 0.2]
+      ori: [0.0, 0.0, 0.0]
+      physics:
+        type: "inflatable"
+        ratio: 1.0
+        particle_system:
+          contact_offset: 0.08
+          rest_offset: 0.020
+        particle_material:
+          friction: 2.0
+        inflatable_config:
+          pressure: 1.0
+          particle_mass: 0.01
+          spring_stretch_stiffness: 1000000.0
+          spring_bend_stiffness: 5000.0
+          spring_shear_stiffness: 5000.0
+          spring_damping: 10.0
+          self_collision: true
+      visual:
+        visible: true
+        color:
+          - [0.85, 0.80, 0.73]
+          - [0.75, 0.70, 0.63]
+          - [0.6, 0.6, 0.0]
+          - [0.0, 0.6, 0.6]
+          - [0.6, 0.0, 0.6]
+
+  falling_dumbell:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/dumbell.usd"]
+    random: false
+    num_per_env: 1
+    falling_dumbell_1:
+      pos: [0.5, 0.0, 1.8]
+      ori: [0.0, 0.0, 0.0]
+      physics:
+        type: "dynamic"
+        mass: 0.1s
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.0
+      visual:
+        visible: true
+        scale: [2.0, 2.0, 2.0]
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+
+  falling_garment:
+    common:
+      primitive_scale: [0.5, 0.5, 0.5]
+    num_per_env: 1
+    random: false
+    usd: ["Plane"]
+    falling_garment_1:
+      pos: [-0.5, 0.0, 1.8]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        scale: [1.0, 1.0, 1.0]
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+        visual_material:
+          material_usd_folder: "/home/user/phys4d/Phys4D/Assets/Material/Garment"
+      physics:
+        type: "dynamic"
+        mass: 0.01
+        physics_material:
+          static_friction: 0.6
+          dynamic_friction: 0.4
+          restitution: 0.2
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [8.0, 0.05, 4.0]
+    background_wall_1:
+      pos: [0.0, -1.0, 1.2]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [0.96, 0.96, 0.96]
+      physics:
+        type: "geometry"

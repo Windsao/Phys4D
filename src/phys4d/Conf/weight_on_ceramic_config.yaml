@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_weight_on_ceramic_env
+  - sim: sim_config
+  - camera: weight_on_ceramic_camera

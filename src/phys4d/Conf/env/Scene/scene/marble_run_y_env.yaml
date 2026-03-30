@@ -1,0 +1,267 @@
+background:
+  intensity: [1500, 2000]
+  texture: ["/home/user/phys4d/Phys4D/Assets/Background/moonlit_golf_4k.hdr"]
+
+light:
+  key_light:
+    types: ["Rect"]
+    common:
+      initial_pos_range: [-0.5, -2.0, 2.0, 0.5, -1.4, 2.6]
+      initial_ori_range: [-20.0, -5.0, -5.0, -10.0, 5.0, 5.0]
+      color_temperature_range: [4800, 5200]
+      color_range: [[0.95, 0.95, 0.95], [1.05, 1.05, 1.05]]
+    Rect:
+      intensity_range: [3500, 4200]
+      width_range: [0.9, 1.1]
+      height_range: [0.7, 0.9]
+  fill_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [0.6, -1.4, 1.0, 0.9, -1.2, 1.4]
+      initial_ori_range: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      color_temperature_range: [5200, 5800]
+      color_range: [[0.85, 0.85, 0.85], [0.95, 0.95, 0.95]]
+    Sphere:
+      intensity_range: [1800, 2200]
+      radius_range: [0.08, 0.12]
+
+objects:
+  wall_panel:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.1, 4.0, 3.5]
+    wall_panel_1:
+      pos: [0.1, -0.2, 1.68]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [0.25, 0.25, 0.50]
+      physics:
+        type: "geometry"
+        collision: true
+
+  rolling_ball:
+    usd: ["Sphere"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.06, 0.06, 0.06]
+    rolling_ball_1:
+      pos: [0.015, 0.65, 2.8]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "dynamic"
+        mass: 0.2
+        linear_velocity: [0.0, 0.0, 0.0]
+        physics_material:
+          static_friction: 0.15
+          dynamic_friction: 0.08
+          restitution: 0.1
+
+  top_guides:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 2
+    common:
+      primitive_scale: [0.2, 0.35, 0.06]
+    top_guides_1:
+      pos: [0.0, 0.65, 2.6]
+      ori: [30.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+    top_guides_2:
+      pos: [0.0, 0.45, 2.30]
+      ori: [20.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+
+  mid_guides:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 3
+    common:
+      primitive_scale: [0.2, 0.55, 0.06]
+    mid_guides_1:
+      pos: [0.0, 0.15, 2.0]
+      ori: [20.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+    mid_guides_2:
+      pos: [0.0, 0.8, 1.7]
+      ori: [-10.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+    mid_guides_3:
+      pos: [0.0, -0.45, 1.4]
+      ori: [-20.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+
+  lower_slabs:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 2
+    common:
+      primitive_scale: [0.2, 0.65, 0.06]
+    lower_slabs_1:
+      pos: [0.0, 0.03, 1.1]
+      ori: [20.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+    lower_slabs_2:
+      pos: [0.0, -1.05, 0.85]
+      ori: [-20.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+
+  u_block_base:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.3, 0.32, 0.04]
+    u_block_base_1:
+      pos: [0.0, -0.53, 0.65]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.7
+          dynamic_friction: 0.4
+          restitution: 0.05
+
+  u_block_side_left:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.2, 0.04, 0.18]
+    u_block_side_left_1:
+      pos: [0.0, -0.7, 0.71]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+
+  u_block_side_right:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.2, 0.04, 0.18]
+    u_block_side_right_1:
+      pos: [0.0, -0.36, 0.71]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true

@@ -1,0 +1,4 @@
+defaults:
+  - scene: block_domino_env
+  - sim: sim_config
+  - camera: block_domino_camera

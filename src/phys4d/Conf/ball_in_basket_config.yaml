@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_ball_in_basket_env
+  - sim: sim_config
+  - camera: ball_in_basket_camera

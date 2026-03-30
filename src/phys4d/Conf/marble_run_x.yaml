@@ -1,0 +1,8 @@
+env_string: MarbleRunXEnv-V0
+defaults:
+  - env: marble_run_x_env
+  - camera_global_planner: default
+  - camera_atomic_skill: marble_run_x_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: marble_run_x_record
+  - task: default

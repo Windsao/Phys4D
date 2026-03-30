@@ -1,0 +1,8 @@
+env_string: RollingReflectionEnv-V0
+defaults:
+  - env: rolling_reflection_env
+  - camera_global_planner: default
+  - camera_atomic_skill: rolling_reflection_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: rolling_reflection_record
+  - task: default

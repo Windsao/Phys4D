@@ -1,0 +1,4 @@
+defaults:
+  - scene: roll_behind_box_env
+  - sim: sim_config
+  - camera: roll_behind_box_camera

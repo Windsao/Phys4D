@@ -1,0 +1,8 @@
+env_string: LightOnMugEnv-V0
+defaults:
+  - env: light_on_mug_env
+  - camera_global_planner: default
+  - camera_atomic_skill: light_on_mug_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: light_on_mug_record
+  - task: default

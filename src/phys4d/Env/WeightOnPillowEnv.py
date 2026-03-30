@@ -1,0 +1,245 @@
+from typing import Any, Dict, Sequence
+
+import torch
+import gymnasium as gym
+from magicsim.StardardEnv.Camera.TaskCameraBaseEnv import TaskCameraBaseEnv
+
+
+class WeightOnPillowEnv(TaskCameraBaseEnv):
+    """
+    Weight On Pillow get_done  falling_dumbell_1
+
+    -  TaskCameraBaseEnv
+    - get_done  falling_dumbell_1
+    """
+
+    def __init__(self, config, cli_args, logger):
+        super().__init__(config, cli_args, logger)
+        self._primary_camera_name: str | None = None
+
+        self._prev_dumbell_positions: Dict[int, torch.Tensor] = {}
+
+    def get_obs_space(self) -> gym.spaces.Dict:
+        return gym.spaces.Dict({})
+
+    def get_policy_obs(self, env_ids: Sequence[int] | None = None) -> Dict[str, Any]:
+        if env_ids is None:
+            env_ids = torch.arange(self.scene.num_envs, device=self.device)
+        camera_info = self.scene.capture_manager.step(env_ids=env_ids)
+        return {
+            "camera_info": camera_info,
+        }
+
+    def get_privilege_obs(self, env_ids: Sequence[int] | None = None) -> Dict[str, Any]:
+        return {}
+
+    def process_camera_action(
+        self,
+        camera_action: Any | None,
+        env_ids: Sequence[int] | None = None,
+    ) -> Dict[str, Any] | None:
+        return camera_action
+
+    def _get_primary_camera_name(self) -> str:
+        if self._primary_camera_name is None:
+            camera_names = list(self.scene.camera_manager.camera_config.keys())
+            if not camera_names:
+                raise RuntimeError("No camera configured in camera_manager.")
+            self._primary_camera_name = camera_names[0]
+        return self._primary_camera_name
+
+    def get_info(self, env_ids: Sequence[int] | None = None) -> Dict[str, Any]:
+        """env"""
+
+        def _to_python(obj: Any) -> Any:
+            if isinstance(obj, torch.Tensor):
+                if obj.ndim == 0:
+                    return obj.item()
+                return obj.detach().cpu().tolist()
+            if isinstance(obj, dict):
+                return {k: _to_python(v) for k, v in obj.items()}
+            if isinstance(obj, (list, tuple)):
+                return [_to_python(v) for v in obj]
+            return obj
+
+        if env_ids is None:
+            env_ids = torch.arange(
+                self.scene.num_envs, device=self.device, dtype=torch.long
+            )
+        elif not isinstance(env_ids, torch.Tensor):
+            env_ids = torch.tensor(env_ids, device=self.device, dtype=torch.long)
+
+        all_env_states = []
+        for env_id in env_ids:
+            env_id_int = int(env_id)
+            state = self.scene.scene_manager.get_state(
+                is_relative=True,
+                env_ids=[env_id_int],
+            )
+            all_env_states.append(_to_python(state))
+
+        return {"state": all_env_states}
+
+    def get_reward(
+        self,
+        camera_action: Dict[str, torch.Tensor] | None,
+        env_ids: Sequence[int] | None = None,
+    ) -> torch.Tensor:
+        return torch.zeros(self.num_envs, device=self.device)
+
+    def get_termination(
+        self,
+        env_ids: Sequence[int] | None = None,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if env_ids is None:
+            env_ids = torch.arange(
+                self.scene.num_envs, device=self.device, dtype=torch.long
+            )
+        termination = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
+        truncated = torch.zeros_like(termination)
+        return termination, truncated
+
+    def reset(self, seed: int | None = None, options: dict[str, Any] | None = None):
+        """Reset all environments and clear previous dumbell positions."""
+        obs, info = super().reset(seed=seed, options=options)
+
+        self._prev_dumbell_positions.clear()
+        return obs, info
+
+    def reset_idx(
+        self,
+        env_ids: Sequence[int] = None,
+        seed: int | None = None,
+        options: dict[str, Any] | None = None,
+    ):
+        """Reset specific environments and clear their previous dumbell positions."""
+        obs, info = super().reset_idx(env_ids=env_ids, seed=seed, options=options)
+
+        if env_ids is not None:
+            if not isinstance(env_ids, torch.Tensor):
+                env_ids = torch.tensor(env_ids, device=self.device, dtype=torch.long)
+            for env_id in env_ids:
+                env_id_int = int(env_id)
+                if env_id_int in self._prev_dumbell_positions:
+                    del self._prev_dumbell_positions[env_id_int]
+        else:
+            self._prev_dumbell_positions.clear()
+        return obs, info
+
+    def get_done(
+        self,
+        env_ids: Sequence[int] | None = None,
+        position_threshold: float = 0.001,
+        debug: bool = False,
+    ) -> torch.Tensor:
+        """
+        Check if falling_dumbell_1 has come to rest by comparing position changes between steps.
+
+        Args:
+            env_ids: Environment IDs to check. If None, checks all environments.
+            position_threshold: Maximum position change (m) between steps to consider as "rested". Default: 0.001
+            debug: If True, print debug information for env_0
+
+        Returns:
+            Tensor of shape (num_envs,) with True for environments where dumbell is rested, False otherwise.
+        """
+        if env_ids is None:
+            env_ids = torch.arange(
+                self.scene.num_envs, device=self.device, dtype=torch.long
+            )
+        elif not isinstance(env_ids, torch.Tensor):
+            env_ids = torch.tensor(env_ids, device=self.device, dtype=torch.long)
+
+        is_done = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
+
+        for env_id in env_ids:
+            env_id_int = int(env_id)
+
+            if (
+                "falling_dumbell" in self.scene.scene_manager._rigid_objects[env_id_int]
+                and len(
+                    self.scene.scene_manager._rigid_objects[env_id_int][
+                        "falling_dumbell"
+                    ]
+                )
+                > 0
+            ):
+                dumbell = self.scene.scene_manager._rigid_objects[env_id_int][
+                    "falling_dumbell"
+                ][0]
+
+                try:
+                    dumbell_state = dumbell.get_state(is_relative=False)
+
+                    if "root_pose" not in dumbell_state:
+                        is_done[env_id_int] = False
+                        if debug and env_id_int == 0:
+                            print("  env_0: root_pose not in state")
+                        continue
+
+                    root_pose = dumbell_state["root_pose"]
+
+                    if isinstance(root_pose, torch.Tensor):
+                        root_pose = root_pose.to(
+                            device=self.device, dtype=torch.float32
+                        )
+                    else:
+                        root_pose = torch.tensor(
+                            root_pose, device=self.device, dtype=torch.float32
+                        )
+
+                    if root_pose.numel() >= 3:
+                        current_pos = root_pose[:3]
+                    else:
+                        current_pos = torch.zeros(
+                            3, device=self.device, dtype=torch.float32
+                        )
+                        current_pos[: root_pose.numel()] = root_pose
+
+                    if torch.isnan(current_pos).any():
+                        is_done[env_id_int] = False
+                        if debug and env_id_int == 0:
+                            print("  env_0: root_pose contains nan")
+                        continue
+
+                    if debug and env_id_int == 0:
+                        pos_str = f"[{current_pos[0]:.4f}, {current_pos[1]:.4f}, {current_pos[2]:.4f}]"
+                        if env_id_int in self._prev_dumbell_positions:
+                            prev_pos = self._prev_dumbell_positions[env_id_int]
+                            pos_change = torch.norm(current_pos - prev_pos).item()
+                            print(
+                                f"Step: env_0 pos={pos_str}, pos_change={pos_change:.6f}, threshold={position_threshold} (from get_state)"
+                            )
+                        else:
+                            print(
+                                f"Step: env_0 pos={pos_str} (first step, no previous pos, from get_state)"
+                            )
+
+                    if env_id_int in self._prev_dumbell_positions:
+                        prev_pos = self._prev_dumbell_positions[env_id_int]
+
+                        pos_change = torch.norm(current_pos - prev_pos)
+
+                        is_done[env_id_int] = pos_change < position_threshold
+
+                        if debug and env_id_int == 0:
+                            print(
+                                f"  env_0: is_done={is_done[env_id_int].item()}, pos_change={pos_change.item():.6f}"
+                            )
+                    else:
+                        is_done[env_id_int] = False
+
+                    self._prev_dumbell_positions[env_id_int] = current_pos.clone()
+                except Exception as e:
+                    is_done[env_id_int] = False
+                    if debug and env_id_int == 0:
+                        print(f"  env_0: Error getting position: {e}")
+                        import traceback
+
+                        traceback.print_exc()
+            else:
+                is_done[env_id_int] = False
+                if debug and env_id_int == 0:
+                    print("  env_0: falling_dumbell not found in rigid_objects")
+
+        return is_done

@@ -1,0 +1,8 @@
+env_string: TwoBallsPassEnv-V0
+defaults:
+  - env: two_balls_pass_env
+  - camera_global_planner: default
+  - camera_atomic_skill: two_balls_pass_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: two_balls_pass_record
+  - task: default

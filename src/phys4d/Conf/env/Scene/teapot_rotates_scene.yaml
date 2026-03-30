@@ -1,0 +1,4 @@
+defaults:
+  - scene: teapot_rotates_env
+  - sim: sim_config
+  - camera: teapot_rotates_camera

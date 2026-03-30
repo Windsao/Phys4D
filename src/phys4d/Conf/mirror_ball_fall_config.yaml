@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_mirror_ball_fall_env
+  - sim: sim_config
+  - camera: mirror_ball_fall_camera

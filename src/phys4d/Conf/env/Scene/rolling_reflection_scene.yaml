@@ -1,0 +1,4 @@
+defaults:
+  - scene: rolling_reflection_env
+  - sim: sim_config
+  - camera: rolling_reflection_camera

@@ -1,0 +1,8 @@
+env_string: DominoWithSpaceEnv-V0
+defaults:
+  - env: domino_with_space_env
+  - camera_global_planner: default
+  - camera_atomic_skill: domino_with_space_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: domino_with_space_record
+  - task: default

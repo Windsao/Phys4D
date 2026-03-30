@@ -1,0 +1,4 @@
+defaults:
+  - scene: ball_hits_duck_env
+  - sim: sim_config
+  - camera: ball_hits_duck_camera

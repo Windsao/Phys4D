@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_silk_cover_env
+  - sim: sim_config
+  - camera: silk_cover_camera

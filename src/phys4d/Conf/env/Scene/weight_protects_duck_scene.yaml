@@ -1,0 +1,4 @@
+defaults:
+  - scene: weight_protects_duck_env
+  - sim: sim_config
+  - camera: weight_protects_duck_camera

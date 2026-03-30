@@ -1,0 +1,57 @@
+output_dir: "/home/user/phys4d/Phys4D/TestOutput/test_rotor_gs_move_camera_env"
+disable_render_product: False
+render_frame_num: 1
+enable_tiled: False
+colorize_depth: True
+
+
+
+
+
+
+camera0:
+  camera:
+    type: camera
+    mesh: kinect
+    resolution: [512, 512]
+    frequency: 30
+    focal_length: 0.05
+    focus_distance: 10
+    mode: RGB
+    pos: [0.0, 1.4, 1.1]
+    ori: [-12.0, 0.0, 180.0]
+    random:
+      pos:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+      ori:
+        min: [0.0, 0.0, 0.0]
+        max: [0.0, 0.0, 0.0]
+    action_noise:
+      pos:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+      ori:
+        min: [0, 0, 0]
+        max: [0, 0, 0]
+  planner:
+    type: "linear"
+    params:
+
+
+
+
+
+
+
+      steps: 10
+      pos_threshold: 0.001
+      rot_threshold_deg: 1.0
+  annotator:
+    enabled: True
+    rgb_capture:
+      type: rgb
+      device: cpu
+    camera_params:
+      type: camera_params
+      device: cpu

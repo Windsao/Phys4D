@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_ball_hits_nothing_env
+  - sim: sim_config
+  - camera: ball_hits_nothing_camera

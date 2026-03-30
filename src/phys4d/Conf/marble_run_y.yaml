@@ -1,0 +1,8 @@
+env_string: MarbleRunYEnv-V0
+defaults:
+  - env: marble_run_y_env
+  - camera_global_planner: default
+  - camera_atomic_skill: marble_run_y_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: marble_run_y_record
+  - task: default

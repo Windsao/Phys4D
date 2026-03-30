@@ -1,0 +1,4 @@
+defaults:
+  - scene: light_on_block_env
+  - sim: sim_config
+  - camera: light_on_block_camera

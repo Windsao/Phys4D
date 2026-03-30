@@ -1,0 +1,8 @@
+env_string: PotatoInWaterEnv-V0
+defaults:
+  - env: potato_in_water_env
+  - camera_global_planner: default
+  - camera_atomic_skill: potato_in_water_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: potato_in_water_record
+  - task: default

@@ -1,0 +1,141 @@
+background:
+  intensity: [1600, 2100]
+  texture: ["/home/user/phys4d/Phys4D/Assets/Background/moonlit_golf_4k.hdr"]
+
+light:
+  key_light:
+    types: ["Rect"]
+    common:
+      initial_pos_range: [-0.3, -0.8, 0.9, 0.3, -0.4, 1.3]
+      initial_ori_range: [-55.0, -15.0, -15.0, -35.0, 15.0, 15.0]
+      color_temperature_range: [4200, 5200]
+      color_range: [[0.9, 0.9, 0.9], [1.1, 1.1, 1.1]]
+    Rect:
+      intensity_range: [2600, 3200]
+      width_range: [0.8, 1.2]
+      height_range: [0.6, 0.9]
+  rim_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [-0.2, 0.6, 0.8, 0.2, 0.9, 1.2]
+      initial_ori_range: [-15.0, -15.0, -15.0, 15.0, 15.0, 15.0]
+      color_temperature_range: [5200, 6200]
+      color_range: [[0.8, 0.8, 0.8], [1.0, 1.0, 1.0]]
+    Sphere:
+      intensity_range: [3500, 4200]
+      radius_range: [0.12, 0.18]
+
+objects:
+  desk_surface:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [4.0, 4.0, 0.1]
+    desk_surface_1:
+      pos: [0.0, 0.0, 0.0]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [0.42, 0.28, 0.18]
+          - [0.34, 0.20, 0.11]
+          - [0.29, 0.22, 0.11]
+          - [0.25, 0.17, 0.14]
+          - [0.50, 0.31, 0.18]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.5
+          restitution: 0.4
+
+  juice:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Object/Fluid/sphere_fluid.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      interaction_with_object: false
+    juice_1:
+      visual:
+        scale: [0.1, 0.1, 0.1]
+        visual_material:
+          material_usd_folder:
+            - "/home/user/phys4d/Phys4D/Assets/Material/Base/Textiles/Linen_Pumpkin.mdl"
+      pos: [-0.45, 0.15, 0.1]
+      ori: [0.0, 0.0, 0.0]
+      physics:
+        type: "fluid"
+        ratio: 1.0
+        particle_system:
+          particle_contact_offset: 0.02
+          contact_offset: 0.02
+          rest_offset: 0.018
+          fluid_rest_offset: 0.011
+          solid_rest_offset: 0.018
+          max_velocity: 2.0
+          smoothing: False
+          anisotropy: False
+          isosurface: True
+        particle_material:
+          cohesion: 0.015
+          friction: 0.08
+          damping: 0.98
+          gravity_scale: 1.0
+          viscosity: 0.01
+          surface_tension: 0.006
+        fluid_volume: 0.5
+
+  juice_container:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/mug.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      scale: [6.0, 6.0, 4.0]
+    juice_container_1:
+      pos: [-0.45, 0.15, 0.0]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.4
+          dynamic_friction: 0.3
+          restitution: 0.1
+
+  domino:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.02, 0.04, 0.07]
+    domino_1:
+      pos: [-0.45, 0.12, 1.5]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+      physics:
+        type: "dynamic"
+        mass: 0.15
+        linear_velocity: [0.0, 0.0, -0.15]
+        physics_material:
+          static_friction: 0.4
+          dynamic_friction: 0.3
+          restitution: 0.05

@@ -1,0 +1,8 @@
+env_string: SmileyBallRotatesEnv-V0
+defaults:
+  - env: smiley_ball_rotates_env
+  - camera_global_planner: default
+  - camera_atomic_skill: smiley_ball_rotates_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: smiley_ball_rotates_record
+  - task: default

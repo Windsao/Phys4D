@@ -1,0 +1,4 @@
+defaults:
+  - scene: test_stable_blocks_env
+  - sim: sim_config
+  - camera: stable_blocks_camera

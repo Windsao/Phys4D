@@ -1,0 +1,152 @@
+
+
+
+
+light:
+
+
+
+
+
+
+
+
+
+
+
+  rim_light:
+    types: ["Sphere"]
+    common:
+      initial_pos_range: [-0.5, 1.2, 1.2, 0.5, 1.4, 1.8]
+      initial_ori_range: [-15.0, -15.0, -15.0, 15.0, 15.0, 15.0]
+      color_temperature_range: [5200, 6200]
+      color_range: [[0.8, 0.8, 0.8], [1.0, 1.0, 1.0]]
+    Sphere:
+      intensity_range: [3500, 4500]
+      radius_range: [0.12, 0.18]
+
+objects:
+
+  desk_surface:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Desk/Collected_willowbench/willowbench_inst_base.usd"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [2.0, 1.0, 1.0]
+    desk_surface_1:
+      pos: [-0.5, 0.0, 0.0]
+      ori: [0.0, 0.0, 90.0]
+      visual:
+        visible: true
+        color:
+          - [2.00, 0.75, 0.00]
+          - [2.40, 0.60, 0.00]
+          - [2.20, 0.75, 0.00]
+          - [1.80, 0.45, 0.00]
+          - [1.20, 0.30, 0.00]
+        scale: [2.0, 2.0, 1.0]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.0
+          dynamic_friction: 0.0
+          restitution: 0.0
+
+
+  teapot:
+    usd: ["/home/user/phys4d/Phys4D/Assets/Scene/teapot.usd"]
+    random: false
+    num_per_env: 1
+    teapot_1:
+      pos: [-0.3, 0.0, 0.95]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        scale: [1.0, 1.0, 1.0]
+      physics:
+        type: "geometry"
+        collision: true
+        physics_material:
+          static_friction: 0.5
+          dynamic_friction: 0.4
+          restitution: 0.2
+
+
+  silk_cloth:
+    common:
+      primitive_scale: [0.5, 0.5, 0.5]
+    num_per_env: 1
+    random: false
+    usd: ["Plane"]
+    silk_cloth_1:
+      pos: [-0.3, 0.0, 2.5]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        scale: [1.2, 1.2, 1.2]
+        visible: true
+        color:
+          - [1.00, 0.00, 0.00]
+          - [0.50, 0.25, 0.25]
+          - [0.25, 0.50, 0.25]
+          - [0.25, 0.25, 0.50]
+          - [0.00, 1.00, 0.00]
+          - [0.00, 0.00, 1.00]
+        visual_material:
+          material_usd_folder: "/home/user/phys4d/Phys4D/Assets/Material/Garment"
+      physics:
+        type: "garment"
+        ratio: 1.0
+        particle_system:
+          particle_system_enabled: True
+          enable_ccd: True
+          solver_position_iteration_count: 16
+          max_depenetration_velocity: null
+          global_self_collision_enabled: true
+          non_particle_collision_enabled: true
+          contact_offset: 0.010
+          rest_offset: 0.006
+          particle_contact_offset: 0.010
+          fluid_rest_offset: 0.006
+          solid_rest_offset: 0.006
+          wind: null
+          max_neighborhood: null
+          max_velocity: null
+        particle_material:
+          adhesion: 0.1
+          adhesion_offset_scale: 0.0
+          cohesion: 0.1
+          particle_adhesion_scale: 3.0
+          particle_friction_scale: 3.0
+          drag: 0.0
+          lift: 0.0
+          friction: 10.0
+          damping: 5.0
+          gravity_scale: 1.0
+          viscosity: null
+          vorticity_confinement: null
+          surface_tension: null
+        garment_config:
+          particle_mass: 5e-3
+          self_collision: true
+          self_collision_filter: true
+          stretch_stiffness: 1e12
+          bend_stiffness: 1e3
+          shear_stiffness: 1e3
+          spring_damping: 5.0
+
+
+  background_wall:
+    usd: ["Cube"]
+    random: false
+    num_per_env: 1
+    common:
+      primitive_scale: [0.05, 10.0, 6.0]
+    background_wall_1:
+      pos: [1.0, 0.25, 1.5]
+      ori: [0.0, 0.0, 0.0]
+      visual:
+        visible: true
+        color: [0.95, 0.7, 0.5]
+      physics:
+        type: "geometry"

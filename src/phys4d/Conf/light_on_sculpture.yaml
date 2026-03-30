@@ -1,0 +1,8 @@
+env_string: LightOnSculptureEnv-V0
+defaults:
+  - env: light_on_sculpture_env
+  - camera_global_planner: default
+  - camera_atomic_skill: light_on_sculpture_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: light_on_sculpture_record
+  - task: default

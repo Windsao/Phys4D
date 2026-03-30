@@ -1,0 +1,9 @@
+env_string: RotorGsEnv-V0
+defaults:
+  - _self_
+  - env: rotor_gs_env
+  - camera_global_planner: default
+  - camera_atomic_skill: rotor_gs_camera_atomic_skill
+  - auto_camera_collect: default
+  - record: rotor_gs_record
+  - task: default
