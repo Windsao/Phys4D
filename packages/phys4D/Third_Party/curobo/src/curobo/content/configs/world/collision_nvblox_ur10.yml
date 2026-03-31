@@ -1,0 +1,34 @@
+
+
+
+
+
+
+
+
+
+
+blox:
+  world_map:
+    pose: [-0.38, 0.280, 1.05,0.043, -0.471, 0.284, 0.834]
+    map_path: "scene/nvblox/srl_ur10_bins.nvblx"
+    mesh_file_path: "scene/nvblox/srl_ur10_bins.obj"
+
+cuboid:
+  case:
+    dims: [0.9, 0.7, 0.4]
+    pose: [0.0, 0.0, -0.6, 1, 0, 0, 0.0]
+
+  stand:
+    dims: [0.3, 0.3, 0.8]
+    pose: [0.0, 0.0, -0.4, 1, 0, 0, 0.0]
+  table:
+    dims: [4.0, 4.0, 0.2]
+    pose: [0.0, 0.0, -0.85, 1, 0, 0, 0.0]
+
+  safety_wall:
+    dims: [2.0, 0.2, 2.0]
+    pose: [0.0, -1.2, 0.0, 1, 0, 0, 0.0]
+
+
+

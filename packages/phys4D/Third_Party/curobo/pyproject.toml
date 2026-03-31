@@ -1,0 +1,69 @@
+
+
+
+
+
+
+
+
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm>=6.2", "wheel", "torch"]
+
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+extend-exclude = "deprecated/"
+
+
+
+
+[tool.setuptools_scm]
+version_scheme = "no-guess-dev"
+local_scheme = "dirty-tag"
+
+[tool.isort]
+
+multi_line_output = 2
+import_heading_stdlib = "Standard Library"
+import_heading_thirdparty = "Third Party"
+import_heading_firstparty = "CuRobo"
+import_heading_localfolder = "Local Folder"
+import_heading_isaacgym = "Loading isaacgym before pytorch"
+known_first_party = "CuRobo"
+known_isaacgym = "isaacgym"
+line_length = 100
+sections = "FUTURE, STDLIB, ISAACGYM, THIRDPARTY, FIRSTPARTY, LOCALFOLDER"
+
+[tool.pytest.ini_options]
+norecursedirs = [".git", ".venv", "deprecated", "dist"]
+python_files = ["*_test.py"]
+
+
+
+
+
+
+
+
+
+[tool.coverage.report]
+
+exclude_lines = [
+	"pragma: no cover",
+	'^\s*pass\s*$',
+    "wp.kernel",
+    "torch.jit.script",
+    "abstractmethod",
+    "def backward",
+    "staticmethod\ndef forward",
+]
+omit = [
+    "src/curobo/util/error_metrics.py",
+    "src/curobo/rollout/cost/straight_line_cost.py",
+    "src/curobo/rollout/cost/projected_dist_cost.py",
+    "src/curobo/rollout/cost/manipulability_cost.py",
+]
+
+[tool.interrogate]
+ignore-regex = ["forward", "backward"]

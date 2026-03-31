@@ -1,0 +1,76 @@
+
+
+
+
+
+
+documentation:
+  - all:
+    - changed-files:
+      - any-glob-to-any-file:
+        - 'docsREADME.md'
+      - all-globs-to-all-files:
+        - '!docs/licenses/**'
+
+
+infrastructure:
+  - changed-files:
+    - any-glob-to-any-file:
+      - .github/**
+      - docker/**
+      - .dockerignore
+      - tools/**
+      - .vscode/**
+      - environment.yml
+      - setup.py
+      - pyproject.toml
+      - .pre-commit-config.yaml
+      - .flake8
+      - isaaclab.sh
+      - isaaclab.bat
+      - docs/licenses/**
+
+
+asset:
+  - changed-files:
+    - any-glob-to-any-file:
+      - source/isaaclab_assets/**
+
+
+isaac-sim:
+  - changed-files:
+    - any-glob-to-any-file:
+      - apps/**
+
+
+isaac-mimic:
+  - changed-files:
+    - any-glob-to-any-file:
+      - source/isaaclab/isaaclab/devices/**
+      - source/isaaclab_mimic/**
+      - source/isaaclab_tasks/isaaclab_tasks/manager_based/manipulation/stack**
+      - source/isaaclab_tasks/isaaclab_tasks/manager_based/manipulation/pick_and_place**
+      - scripts/imitation_learning/**
+
+
+isaac-lab:
+  - all:
+    - changed-files:
+      - any-glob-to-any-file:
+        - source/**
+        - scripts/**
+      - all-globs-to-all-files:
+        - '!source/isaaclab_assets/**'
+        - '!source/isaaclab_mimic/**'
+        - '!source/isaaclab/isaaclab/devices'
+        - '!scripts/imitation_learning/**'
+
+
+
+enhancement:
+  - head-branch: ['^feature', 'feature']
+
+
+
+bug:
+  - head-branch: ['^fix', 'fix', '^bug', 'bug']

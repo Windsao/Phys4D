@@ -1,0 +1,155 @@
+
+
+
+
+
+"""Launch Isaac Sim Simulator first."""
+
+from isaaclab.app import AppLauncher
+
+
+simulation_app = AppLauncher(headless=True).app
+
+"""Rest everything follows."""
+
+import isaacsim.core.utils.prims as prim_utils
+import isaacsim.core.utils.stage as stage_utils
+import pytest
+from isaacsim.core.api.simulation_context import SimulationContext
+from pxr import UsdLux
+
+import isaaclab.sim as sim_utils
+from isaaclab.utils.string import to_camel_case
+
+
+@pytest.fixture(autouse=True)
+def test_setup_teardown():
+    """Setup and teardown for each test."""
+
+    stage_utils.create_new_stage()
+
+    dt = 0.1
+
+    sim = SimulationContext(physics_dt=dt, rendering_dt=dt, backend="numpy")
+
+    stage_utils.update_stage()
+
+
+    yield sim
+
+
+    sim.stop()
+    sim.clear()
+    sim.clear_all_callbacks()
+    sim.clear_instance()
+
+
+def _validate_properties_on_prim(prim_path: str, cfg: sim_utils.LightCfg):
+    """Validate the properties on the prim.
+
+    Args:
+        prim_path: The prim name.
+        cfg: The configuration for the light source.
+    """
+
+    non_usd_params = ["func", "prim_type", "visible", "semantic_tags", "copy_from_source"]
+
+    prim = prim_utils.get_prim_at_path(prim_path)
+    for attr_name, attr_value in cfg.__dict__.items():
+
+        if attr_name in non_usd_params or attr_value is None:
+            continue
+
+        if "texture" in attr_name:
+            light_prim = UsdLux.DomeLight(prim)
+            if attr_name == "texture_file":
+                configured_value = light_prim.GetTextureFileAttr().Get()
+            elif attr_name == "texture_format":
+                configured_value = light_prim.GetTextureFormatAttr().Get()
+            else:
+                raise ValueError(f"Unknown texture attribute: '{attr_name}'")
+        else:
+
+            if attr_name == "visible_in_primary_ray":
+                prim_prop_name = f"{to_camel_case(attr_name, to='cC')}"
+            else:
+                prim_prop_name = f"inputs:{to_camel_case(attr_name, to='cC')}"
+
+            configured_value = prim.GetAttribute(prim_prop_name).Get()
+
+        assert configured_value == attr_value, f"Failed for attribute: '{attr_name}'"
+
+
+def test_spawn_disk_light(test_setup_teardown):
+    """Test spawning a disk light source."""
+    cfg = sim_utils.DiskLightCfg(
+        color=(0.1, 0.1, 0.1), enable_color_temperature=True, color_temperature=5500, intensity=100, radius=20.0
+    )
+    prim = cfg.func("/World/disk_light", cfg)
+
+
+    assert prim.IsValid()
+    assert prim_utils.is_prim_path_valid("/World/disk_light")
+    assert prim.GetPrimTypeInfo().GetTypeName() == "DiskLight"
+
+    _validate_properties_on_prim("/World/disk_light", cfg)
+
+
+def test_spawn_distant_light(test_setup_teardown):
+    """Test spawning a distant light."""
+    cfg = sim_utils.DistantLightCfg(
+        color=(0.1, 0.1, 0.1), enable_color_temperature=True, color_temperature=5500, intensity=100, angle=20
+    )
+    prim = cfg.func("/World/distant_light", cfg)
+
+
+    assert prim.IsValid()
+    assert prim_utils.is_prim_path_valid("/World/distant_light")
+    assert prim.GetPrimTypeInfo().GetTypeName() == "DistantLight"
+
+    _validate_properties_on_prim("/World/distant_light", cfg)
+
+
+def test_spawn_dome_light(test_setup_teardown):
+    """Test spawning a dome light source."""
+    cfg = sim_utils.DomeLightCfg(
+        color=(0.1, 0.1, 0.1), enable_color_temperature=True, color_temperature=5500, intensity=100
+    )
+    prim = cfg.func("/World/dome_light", cfg)
+
+
+    assert prim.IsValid()
+    assert prim_utils.is_prim_path_valid("/World/dome_light")
+    assert prim.GetPrimTypeInfo().GetTypeName() == "DomeLight"
+
+    _validate_properties_on_prim("/World/dome_light", cfg)
+
+
+def test_spawn_cylinder_light(test_setup_teardown):
+    """Test spawning a cylinder light source."""
+    cfg = sim_utils.CylinderLightCfg(
+        color=(0.1, 0.1, 0.1), enable_color_temperature=True, color_temperature=5500, intensity=100, radius=20.0
+    )
+    prim = cfg.func("/World/cylinder_light", cfg)
+
+
+    assert prim.IsValid()
+    assert prim_utils.is_prim_path_valid("/World/cylinder_light")
+    assert prim.GetPrimTypeInfo().GetTypeName() == "CylinderLight"
+
+    _validate_properties_on_prim("/World/cylinder_light", cfg)
+
+
+def test_spawn_sphere_light(test_setup_teardown):
+    """Test spawning a sphere light source."""
+    cfg = sim_utils.SphereLightCfg(
+        color=(0.1, 0.1, 0.1), enable_color_temperature=True, color_temperature=5500, intensity=100, radius=20.0
+    )
+    prim = cfg.func("/World/sphere_light", cfg)
+
+
+    assert prim.IsValid()
+    assert prim_utils.is_prim_path_valid("/World/sphere_light")
+    assert prim.GetPrimTypeInfo().GetTypeName() == "SphereLight"
+
+    _validate_properties_on_prim("/World/sphere_light", cfg)

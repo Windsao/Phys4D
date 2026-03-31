@@ -1,0 +1,33 @@
+[project]
+name = "phys4d"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "magicsim[isaac]",
+    "omegaconf>=2.3.0",
+    "packaging>=20.9,<24",
+]
+[tool.uv]
+required-environments = [
+    "sys_platform == 'linux' and platform_machine == 'x86_64'"
+]
+
+[[tool.uv.index]]
+url = "https://pypi.nvidia.com/"
+
+
+[tool.uv.sources]
+magicsim = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[project.scripts]
+phys4d = "phys4d:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

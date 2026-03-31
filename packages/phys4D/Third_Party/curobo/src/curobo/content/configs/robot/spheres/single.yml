@@ -1,0 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+robot: 'single'
+collision_spheres:
+    base:
+        - "center": [-0.08, 0.0, 0.05]
+          "radius": 0.06

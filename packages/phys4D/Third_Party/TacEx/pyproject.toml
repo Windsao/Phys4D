@@ -1,0 +1,62 @@
+[tool.ruff]
+
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+
+ignore = [
+    "E402",
+    "E501",
+    "E203",
+    "D401",
+    "RET504",
+    "RET505",
+    "SIM102",
+    "SIM117",
+]
+
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = ["F401"]
+
+[tool.isort]
+
+atomic = true
+profile = "black"
+line_length = 120
+py_version = 310
+skip_glob = ["docs__pycache__",
+    "**/docs",
+    "**/logs",
+    ".git",
+    ".vscode",
+]
+
+typeCheckingMode = "basic"
+pythonVersion = "3.10"
+pythonPlatform = "Linux"
+enableTypeIgnoreComments = true
+
+
+
+reportMissingImports = "none"
+
+reportMissingModuleSource = "none"
+
+reportGeneralTypeIssues = "none"
+reportOptionalMemberAccess = "warning"
+reportPrivateUsage = "warning"
+
+[tool.codespell]
+skip = '*.usd,*.svg,*.png,_isaac_sim*,*.bib,*.css,*/_build'
+quiet-level = 0
+
+
+ignore-words-list = "haa,slq,collapsable,buss,abd,THIRDPARTY,TOI"

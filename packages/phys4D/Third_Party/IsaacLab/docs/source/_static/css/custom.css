@@ -1,0 +1,109 @@
+
+
+
+html[data-theme="light"] {
+    --pst-color-primary:
+    --pst-color-secondary:
+    --pst-color-secondary-highlight:
+    --pst-color-inline-code-links:
+    --pst-color-info: var(--pst-color-primary);
+    --pst-color-info-highlight: var(--pst-color-primary);
+    --pst-color-info-bg:
+    --pst-color-attention:
+    --pst-color-text-base:
+    --pst-color-text-muted:
+    --pst-color-shadow:
+    --pst-color-border:
+    --pst-color-inline-code:
+    --pst-color-target:
+    --pst-color-background:
+    --pst-color-on-background:
+    --pst-color-surface:
+    --pst-color-on-surface:
+    --pst-color-link: var(--pst-color-primary);
+    --pst-color-link-hover:
+    --pst-color-table-row-hover-bg:
+    --pst-color-accent: var(--pst-color-primary);
+}
+
+
+html[data-theme="dark"] {
+    --pst-color-primary:
+    --pst-color-secondary:
+    --pst-color-secondary-highlight:
+    --pst-color-inline-code-links:
+    --pst-color-info: var(--pst-color-primary);
+    --pst-color-info-highlight: var(--pst-color-primary);
+    --pst-color-info-bg:
+    --pst-color-attention:
+    --pst-color-text-base:
+    --pst-color-text-muted:
+    --pst-color-shadow:
+    --pst-color-border: silver;
+    --pst-color-inline-code:
+    --pst-color-target:
+    --pst-color-background:
+    --pst-color-on-background:
+    --pst-color-surface:
+    --pst-color-on-surface:
+    --pst-color-link: var(--pst-color-primary);
+    --pst-color-link-hover:
+    --pst-color-table-row-hover-bg:
+    --pst-color-accent: var(--pst-color-primary);
+}
+
+a {
+    text-decoration: none !important;
+}
+
+
+.bd-header-announcement a,
+.bd-header-version-warning a {
+    color:
+}
+
+
+.form-control {
+    border-radius: 0 !important;
+    border: none !important;
+    outline: none !important;
+}
+
+
+.navbar-brand {
+    padding-top: 0.0rem !important;
+    padding-bottom: 0.0rem !important;
+}
+
+.navbar-icon-links {
+    padding-top: 0.0rem !important;
+    padding-bottom: 0.0rem !important;
+}
+
+
+
+.showcase-table {
+    min-width: 75%;
+}
+
+.showcase-table td {
+    border-color: gray;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.showcase-table p {
+    margin: 0;
+    padding: 0;
+}
+
+.showcase-table .rot90 {
+    transform: rotate(-90deg);
+    margin: 0;
+    padding: 0;
+}
+
+.showcase-table .center {
+    text-align: center;
+    vertical-align: middle;
+}

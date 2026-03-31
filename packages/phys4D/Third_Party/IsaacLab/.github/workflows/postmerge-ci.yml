@@ -1,0 +1,170 @@
+
+
+
+
+
+name: Post-Merge CI
+
+on:
+  push:
+    branches:
+      - main
+      - devel
+      - release/**
+
+
+concurrency:
+  group: postmerge-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NGC_API_KEY: ${{ secrets.NGC_API_KEY }}
+  ISAACSIM_BASE_IMAGE: ${{ vars.ISAACSIM_BASE_IMAGE || 'nvcr.io/nvidia/isaac-sim' }}
+  ISAACSIM_BASE_VERSIONS_STRING: ${{ vars.ISAACSIM_BASE_VERSIONS_STRING || '5.1.0' }}
+  ISAACLAB_IMAGE_NAME: ${{ vars.ISAACLAB_IMAGE_NAME || 'isaac-lab-base' }}
+
+jobs:
+  build-and-push-images:
+    runs-on: [self-hosted, gpu]
+    timeout-minutes: 180
+    environment:
+      name: postmerge-production
+      url: https:
+    env:
+        DOCKER_HOST: unix:
+        DOCKER_TLS_CERTDIR: ""
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: linux/arm64
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        platforms: linux/amd64,linux/arm64
+        driver-opts: |
+          image=moby/buildkit:buildx-stable-1
+
+    - name: Login to NGC
+      run: |
+
+        if [ -n "${{ env.NGC_API_KEY }}" ]; then
+          echo "Logging into NGC registry..."
+          docker login -u \$oauthtoken -p ${{ env.NGC_API_KEY }} nvcr.io
+          echo "✅ Successfully logged into NGC registry"
+        else
+          echo "⚠️ NGC_API_KEY not available - skipping NGC login"
+          echo "This is normal when secrets are not configured"
+        fi
+
+    - name: Build and Push Docker Images
+      run: |
+
+        BRANCH_NAME="${{ github.ref_name }}"
+
+
+        SAFE_BRANCH_NAME=$(echo $BRANCH_NAME | sed 's/[^a-zA-Z0-9._-]/-/g')
+
+
+        if [ -z "$SAFE_BRANCH_NAME" ]; then
+          SAFE_BRANCH_NAME="latest"
+        fi
+
+
+        REPO_SHORT_NAME="${{ github.event.repository.name }}"
+        if [ -z "$REPO_SHORT_NAME" ]; then
+          REPO_SHORT_NAME="verification"
+        fi
+
+        echo "Building images for branch: $BRANCH_NAME"
+        echo "Safe branch name: $SAFE_BRANCH_NAME"
+        echo "Repository name: $REPO_SHORT_NAME"
+        echo "IsaacSim versions: ${{ env.ISAACSIM_BASE_VERSIONS_STRING }}"
+
+
+        IMAGE_BASE_VERSIONS_STRING="${{ env.ISAACSIM_BASE_VERSIONS_STRING }}"
+
+        set -- $IMAGE_BASE_VERSIONS_STRING
+        IMAGE_BASE_VERSIONS=("$@")
+
+        for IMAGE_BASE_VERSION in "${IMAGE_BASE_VERSIONS[@]}"; do
+          IMAGE_BASE_VERSION=$(echo "$IMAGE_BASE_VERSION" | tr -d '[:space:]')
+
+
+          if [ -z "$IMAGE_BASE_VERSION" ]; then
+            continue
+          fi
+
+
+          COMBINED_TAG="${REPO_SHORT_NAME}-${SAFE_BRANCH_NAME}-${IMAGE_BASE_VERSION}"
+          BUILD_TAG="${COMBINED_TAG}-b${{ github.run_number }}"
+
+
+          echo "Checking if base image supports multiarch..."
+          BASE_IMAGE_FULL="${{ env.ISAACSIM_BASE_IMAGE }}:${IMAGE_BASE_VERSION}"
+
+
+          ARCHITECTURES=$(docker manifest inspect "$BASE_IMAGE_FULL" 2>/dev/null | grep -o '"architecture": "[^"]*"' | cut -d'"' -f4 | sort -u)
+
+          if [ -z "$ARCHITECTURES" ]; then
+            echo "Could not inspect base image manifest: $BASE_IMAGE_FULL"
+            echo "Defaulting to AMD64 only for safety"
+            BUILD_PLATFORMS="linux/amd64"
+          else
+            echo "Base image architectures found:"
+            echo "$ARCHITECTURES" | sed 's/^/  - /'
+
+
+            HAS_AMD64=$(echo "$ARCHITECTURES" | grep -c "amd64" || true)
+            HAS_ARM64=$(echo "$ARCHITECTURES" | grep -c "arm64" || true)
+
+            if [ "$HAS_AMD64" -gt 0 ] && [ "$HAS_ARM64" -gt 0 ]; then
+              echo "Base image supports multiarch (amd64 + arm64)"
+              BUILD_PLATFORMS="linux/amd64,linux/arm64"
+            elif [ "$HAS_AMD64" -gt 0 ]; then
+              echo "Base image only supports amd64"
+              BUILD_PLATFORMS="linux/amd64"
+            elif [ "$HAS_ARM64" -gt 0 ]; then
+              echo "Base image only supports arm64"
+              BUILD_PLATFORMS="linux/arm64"
+            else
+              echo "Unknown architecture support, defaulting to amd64"
+              BUILD_PLATFORMS="linux/amd64"
+            fi
+          fi
+
+          echo "Building image: ${{ env.ISAACLAB_IMAGE_NAME }}:$COMBINED_TAG"
+          echo "IsaacSim version: $IMAGE_BASE_VERSION"
+          echo "Base image: $BASE_IMAGE_FULL"
+          echo "Target platforms: $BUILD_PLATFORMS"
+
+
+          docker buildx build \
+            --platform $BUILD_PLATFORMS \
+            --progress=plain \
+            -t ${{ env.ISAACLAB_IMAGE_NAME }}:$COMBINED_TAG \
+            -t ${{ env.ISAACLAB_IMAGE_NAME }}:$BUILD_TAG \
+            --build-arg ISAACSIM_BASE_IMAGE_ARG=${{ env.ISAACSIM_BASE_IMAGE }} \
+            --build-arg ISAACSIM_VERSION_ARG=$IMAGE_BASE_VERSION \
+            --build-arg ISAACSIM_ROOT_PATH_ARG=/isaac-sim \
+            --build-arg ISAACLAB_PATH_ARG=/workspace/isaaclab \
+            --build-arg DOCKER_USER_HOME_ARG=/root \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -f docker/Dockerfile.base \
+            --push .
+
+          echo "✅ Successfully built and pushed: ${{ env.ISAACLAB_IMAGE_NAME }}:$COMBINED_TAG (platforms: $BUILD_PLATFORMS)"
+          echo "✅ Successfully built and pushed: ${{ env.ISAACLAB_IMAGE_NAME }}:$BUILD_TAG (platforms: $BUILD_PLATFORMS)"
+        done

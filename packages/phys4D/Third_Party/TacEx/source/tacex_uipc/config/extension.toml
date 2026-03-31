@@ -1,0 +1,32 @@
+[package]
+
+
+version = "0.1.0"
+
+
+category = "isaaclab"
+readme  = "README.md"
+
+title = "Integration of libuipc for IsaacLab"
+author = "Duc"
+maintainer = "Duc"
+description="Integration of libuipc for IsaacLab - Incremental Potentional Contact in Isaac Sim for Reinforcement Learning."
+repository = "https://github.com/isaac-sim/IsaacLabExtensionTemplate.git"
+keywords = ["extension", "template", "isaaclab"]
+
+[dependencies]
+"isaaclab" = {}
+"isaaclab_assets" = {}
+"isaaclab_rl" = {}
+"isaaclab_tasks" = {}
+
+
+[[python.module]]
+name = "tacex_uipc"
+
+[isaaclab_settings]
+
+
+
+
+

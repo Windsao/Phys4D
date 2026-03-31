@@ -1,0 +1,176 @@
+
+
+
+
+
+"""Launch Isaac Sim Simulator first."""
+
+from isaaclab.app import AppLauncher
+
+
+app_launcher = AppLauncher(headless=True, enable_cameras=True)
+simulation_app = app_launcher.app
+
+
+"""Rest everything follows."""
+
+import gymnasium as gym
+import torch
+from tensordict import TensorDict
+
+import carb
+import omni.usd
+import pytest
+
+from isaaclab.envs import DirectMARLEnv, multi_agent_to_single_agent
+
+from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper
+
+import isaaclab_tasks
+from isaaclab_tasks.utils.parse_cfg import parse_env_cfg
+
+
+@pytest.fixture(scope="module")
+def registered_tasks():
+
+    registered_tasks = list()
+    for task_spec in gym.registry.values():
+        if "Isaac" in task_spec.id:
+            cfg_entry_point = gym.spec(task_spec.id).kwargs.get("rsl_rl_cfg_entry_point")
+            if cfg_entry_point is not None:
+                registered_tasks.append(task_spec.id)
+
+    registered_tasks.sort()
+    registered_tasks = registered_tasks[:5]
+
+
+
+    carb_settings_iface = carb.settings.get_settings()
+    carb_settings_iface.set_bool("/physics/cooking/ujitsoCollisionCooking", False)
+
+
+    print(">>> All registered environments:", registered_tasks)
+    return registered_tasks
+
+
+def test_random_actions(registered_tasks):
+    """Run random actions and check environments return valid signals."""
+
+    num_envs = 64
+    device = "cuda"
+    for task_name in registered_tasks:
+
+        print(f">>> Running test for environment: {task_name}")
+
+        omni.usd.get_context().new_stage()
+
+        carb.settings.get_settings().set_bool("/isaaclab/render/rtx_sensors", False)
+        try:
+
+            env_cfg = parse_env_cfg(task_name, device=device, num_envs=num_envs)
+
+            env = gym.make(task_name, cfg=env_cfg)
+
+            if isinstance(env.unwrapped, DirectMARLEnv):
+                env = multi_agent_to_single_agent(env)
+
+            env = RslRlVecEnvWrapper(env)
+        except Exception as e:
+            if "env" in locals() and hasattr(env, "_is_closed"):
+                env.close()
+            else:
+                if hasattr(e, "obj") and hasattr(e.obj, "_is_closed"):
+                    e.obj.close()
+            pytest.fail(f"Failed to set-up the environment for task {task_name}. Error: {e}")
+
+
+        obs, extras = env.reset()
+
+        assert _check_valid_tensor(obs)
+        assert _check_valid_tensor(extras)
+
+
+        with torch.inference_mode():
+            for _ in range(100):
+
+                actions = 2 * torch.rand(env.action_space.shape, device=env.unwrapped.device) - 1
+
+                transition = env.step(actions)
+
+                for data in transition:
+                    assert _check_valid_tensor(data), f"Invalid data: {data}"
+
+
+        print(f">>> Closing environment: {task_name}")
+        env.close()
+
+
+def test_no_time_outs(registered_tasks):
+    """Check that environments with finite horizon do not send time-out signals."""
+
+    num_envs = 64
+    device = "cuda"
+    for task_name in registered_tasks:
+
+        print(f">>> Running test for environment: {task_name}")
+
+        omni.usd.get_context().new_stage()
+
+        env_cfg = parse_env_cfg(task_name, device=device, num_envs=num_envs)
+
+        env_cfg.is_finite_horizon = True
+
+
+        env = gym.make(task_name, cfg=env_cfg)
+
+        env = RslRlVecEnvWrapper(env)
+
+
+        _, extras = env.reset()
+
+        assert "time_outs" not in extras, "Time-out signal found in finite horizon environment."
+
+
+        with torch.inference_mode():
+            for _ in range(10):
+
+                actions = 2 * torch.rand(env.action_space.shape, device=env.unwrapped.device) - 1
+
+                extras = env.step(actions)[-1]
+
+                assert "time_outs" not in extras, "Time-out signal found in finite horizon environment."
+
+
+        print(f">>> Closing environment: {task_name}")
+        env.close()
+
+
+"""
+Helper functions.
+"""
+
+
+@staticmethod
+def _check_valid_tensor(data: torch.Tensor | dict) -> bool:
+    """Checks if given data does not have corrupted values.
+
+    Args:
+        data: Data buffer.
+
+    Returns:
+        True if the data is valid.
+    """
+    if isinstance(data, torch.Tensor):
+        return not torch.any(torch.isnan(data))
+    elif isinstance(data, TensorDict):
+        return not data.isnan().any()
+    elif isinstance(data, dict):
+        valid_tensor = True
+        for value in data.values():
+            if isinstance(value, dict):
+                valid_tensor &= _check_valid_tensor(value)
+            elif isinstance(value, torch.Tensor):
+                valid_tensor &= not torch.any(torch.isnan(value))
+        return valid_tensor
+    else:
+        raise ValueError(f"Input data of invalid type: {type(data)}.")

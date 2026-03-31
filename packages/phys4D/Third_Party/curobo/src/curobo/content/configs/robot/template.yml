@@ -1,0 +1,47 @@
+
+
+
+
+
+
+
+
+
+
+
+robot_cfg:
+  kinematics:
+    usd_path: "FILL_THIS"
+    usd_robot_root: "/robot"
+    isaac_usd_path: ""
+    usd_flip_joints: {}
+    usd_flip_joint_limits: []
+
+    urdf_path: "FILL_THIS"
+    asset_root_path: ""
+
+    base_link: "FILL_THIS"
+    ee_link: "FILL_THIS"
+    link_names: null
+    lock_joints: null
+    extra_links: null
+
+
+    collision_link_names: null
+    collision_spheres: null
+    collision_sphere_buffer: 0.005
+    extra_collision_spheres: {}
+    self_collision_ignore: {}
+    self_collision_buffer: {}
+
+    use_global_cumul: True
+    mesh_link_names: null
+    external_asset_path: null
+
+    cspace:
+      joint_names: []
+      retract_config: null
+      null_space_weight: null
+      cspace_distance_weight: null
+      max_jerk: 500.0
+      max_acceleration: 15.0

@@ -1,0 +1,36 @@
+[package]
+
+
+version = "0.1.0"
+
+
+category = "isaaclab"
+readme  = "README.md"
+
+title = "TacEx RL Environments"
+author = "Duc"
+maintainer = "Duc"
+description="Extension containing RL Environments for Tactile Sensing"
+repository = "https://github.com/isaac-sim/IsaacLabExtensionTemplate.git"
+keywords = ["rl", "robotics", "isaaclab", "tacex", "tactile", "gelsight"]
+
+[dependencies]
+"isaaclab" = {}
+"isaaclab_assets" = {}
+"isaaclab_mimic" = {}
+"isaaclab_rl" = {}
+"isaaclab_tasks" = {}
+
+
+"tacex" = {}
+"tacex_assets" = {}
+
+[[python.module]]
+name = "tacex_tasks"
+
+[isaaclab_settings]
+
+
+
+
+

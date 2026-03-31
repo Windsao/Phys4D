@@ -1,0 +1,53 @@
+
+
+
+
+
+
+
+
+
+
+model:
+  horizon: 1
+  state_filter_cfg:
+    filter_coeff:
+      position: 1.0
+      velocity: 1.0
+      acceleration: 0.0
+    enable: True
+  dt_traj_params:
+    base_dt: 0.02
+    base_ratio: 1.0
+    max_dt: 0.02
+  vel_scale: 1.0
+  control_space: 'POSITION'
+  teleport_mode: True
+  state_finite_difference_mode: "CENTRAL"
+
+
+
+graph:
+  max_nodes: 5000
+  steer_delta_buffer: 500
+  sample_pts: 1500
+  node_similarity_distance: 0.1
+
+  rejection_ratio: 10
+  k_nn: 15
+  max_buffer: 10000
+  max_cg_buffer: 1000
+  vertex_n : 30
+
+  graph_max_attempts: 10
+  graph_min_attempts: 1
+  init_nodes: 30
+
+  c_max: 1.25
+  use_bias_node: True
+  compute_metrics: False
+  interpolation_steps: 1000
+  interpolation_type: "linear"
+  seed: 0
+  interpolation_deviation: 0.05
+  interpolation_acceleration_scale: 0.25

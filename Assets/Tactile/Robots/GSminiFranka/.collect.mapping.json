@@ -1,0 +1,59 @@
+{
+    "version": "1.0",
+    "file_records": [
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.0/Isaac/Environments/Grid/gridroom_curved.usd",
+            "source_hash": "1272d717c0c0d60964daf8241d53b90a14367208",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.0/Isaac/Environments/Grid/gridroom_curved.usd",
+            "target_hash": "1317d22bbd62c2fd4cc455e4ffae0ef4807a5e44"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/2023.1.1/Isaac/Environments/Grid/gridroom_curved.usd",
+            "source_hash": "f6212181b1d52add8a0b7d4eea29a39c180a2320",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/2023.1.1/Isaac/Environments/Grid/gridroom_curved.usd",
+            "target_hash": "e25b4451ddb544d64414f5bfb7d78385bf4bef5e"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Materials/Base/Glass/Red_Glass.mdl",
+            "source_hash": "4205964ee033a12a5e5cf90bc98899d8cd816ffe",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Materials/Base/Glass/Red_Glass.mdl",
+            "target_hash": "cb98b0e5de7c11d61bee05652acd8a7a96e6db19"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.0/Isaac/Environments/Grid/Materials/Textures/radialFalloffGrid_v02.png",
+            "source_hash": "62f4ec935f63eb7582157c156fe4d036b22f44ab",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.0/Isaac/Environments/Grid/Materials/Textures/radialFalloffGrid_v02.png",
+            "target_hash": "676a3e9e05423ffc0934ed7539988ec1efffd0c6"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.0/Isaac/Environments/Grid/Materials/Textures/radialGrid_clrmap_50.png",
+            "source_hash": "7cef8b35f2c6430ce6fe7330e019e144f6db372e",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.0/Isaac/Environments/Grid/Materials/Textures/radialGrid_clrmap_50.png",
+            "target_hash": "dfc11c8e5380f846104ba593ae3c48f2ba062d5c"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/2023.1.1/Isaac/Environments/Grid/Materials/Textures/radialFalloffGrid_v02.png",
+            "source_hash": "ed5c1733e8f93518ae4cb70b6b18a48c4a49e19e",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/2023.1.1/Isaac/Environments/Grid/Materials/Textures/radialFalloffGrid_v02.png",
+            "target_hash": "000cad7762711e77fc7d7e7ebcba989b1b245da7"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/2023.1.1/Isaac/Environments/Grid/Materials/Textures/radialGrid_clrmap_50.png",
+            "source_hash": "e72afce5f8b0c313ee758d82515faa41da786ddb",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/2023.1.1/Isaac/Environments/Grid/Materials/Textures/radialGrid_clrmap_50.png",
+            "target_hash": "4152ee06784a06611633a98a897254e04abc2301"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Materials/Base/Templates/GlassWithVolume.mdl",
+            "source_hash": "28514fc51c78ea8ff60c8ea062ee2f88bb7aed8b",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Materials/Base/Templates/GlassWithVolume.mdl",
+            "target_hash": "8610bef419685a1aed872bc1d828da3277c74bde"
+        },
+        {
+            "source_url": "http://omniverse-content-production.s3-us-west-2.amazonaws.com/Materials/Base/Templates/GlassUtils.mdl",
+            "source_hash": "299053fc792abfda95d0213d3d8c7ce0d0d2772b",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Materials/Base/Templates/GlassUtils.mdl",
+            "target_hash": "d889bd8c1cf1407eb07da9ab459ef19f6c4f93c0"
+        }
+    ]
+}

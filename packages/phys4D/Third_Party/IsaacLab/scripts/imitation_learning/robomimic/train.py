@@ -1,0 +1,451 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+The main entry point for training policies from pre-collected data.
+
+This script loads dataset(s), creates a model based on the algorithm specified,
+and trains the model. It supports training on various environments with multiple
+algorithms from robomimic.
+
+Args:
+    algo: Name of the algorithm to run.
+    task: Name of the environment.
+    name: If provided, override the experiment name defined in the config.
+    dataset: If provided, override the dataset path defined in the config.
+    log_dir: Directory to save logs.
+    normalize_training_actions: Whether to normalize actions in the training data.
+
+This file has been modified from the original robomimic version to integrate with IsaacLab.
+"""
+
+"""Launch Isaac Sim Simulator first."""
+
+from isaaclab.app import AppLauncher
+
+
+app_launcher = AppLauncher(headless=True)
+simulation_app = app_launcher.app
+
+"""Rest everything follows."""
+
+
+import argparse
+
+
+import gymnasium as gym
+import h5py
+import json
+import numpy as np
+import os
+import shutil
+import sys
+import time
+import torch
+import traceback
+from collections import OrderedDict
+from torch.utils.data import DataLoader
+
+import psutil
+
+
+import robomimic.utils.env_utils as EnvUtils
+import robomimic.utils.file_utils as FileUtils
+import robomimic.utils.obs_utils as ObsUtils
+import robomimic.utils.torch_utils as TorchUtils
+import robomimic.utils.train_utils as TrainUtils
+from robomimic.algo import algo_factory
+from robomimic.config import Config, config_factory
+from robomimic.utils.log_utils import DataLogger, PrintLogger
+
+
+import isaaclab_tasks
+import isaaclab_tasks.manager_based.locomanipulation.pick_place
+import isaaclab_tasks.manager_based.manipulation.pick_place
+
+
+def normalize_hdf5_actions(config: Config, log_dir: str) -> str:
+    """Normalizes actions in hdf5 dataset to [-1, 1] range.
+
+    Args:
+        config: The configuration object containing dataset path.
+        log_dir: Directory to save normalization parameters.
+
+    Returns:
+        Path to the normalized dataset.
+    """
+    base, ext = os.path.splitext(config.train.data)
+    normalized_path = base + "_normalized" + ext
+
+
+    print(f"Creating normalized dataset at {normalized_path}")
+    shutil.copyfile(config.train.data, normalized_path)
+
+
+    with h5py.File(normalized_path, "r+") as f:
+        dataset_paths = [f"/data/demo_{str(i)}/actions" for i in range(len(f["data"].keys()))]
+
+
+        dataset = np.array(f[dataset_paths[0]]).flatten()
+        for i, path in enumerate(dataset_paths):
+            if i != 0:
+                data = np.array(f[path]).flatten()
+                dataset = np.append(dataset, data)
+
+        max = np.max(dataset)
+        min = np.min(dataset)
+
+
+        for i, path in enumerate(dataset_paths):
+            data = np.array(f[path])
+            normalized_data = 2 * ((data - min) / (max - min)) - 1
+            del f[path]
+            f[path] = normalized_data
+
+
+        with open(os.path.join(log_dir, "normalization_params.txt"), "w") as f:
+            f.write(f"min: {min}\n")
+            f.write(f"max: {max}\n")
+
+    return normalized_path
+
+
+def train(config: Config, device: str, log_dir: str, ckpt_dir: str, video_dir: str):
+    """Train a model using the algorithm specified in config.
+
+    Args:
+        config: Configuration object.
+        device: PyTorch device to use for training.
+        log_dir: Directory to save logs.
+        ckpt_dir: Directory to save checkpoints.
+        video_dir: Directory to save videos.
+    """
+
+    np.random.seed(config.train.seed)
+    torch.manual_seed(config.train.seed)
+
+    print("\n============= New Training Run with Config =============")
+    print(config)
+    print("")
+
+    print(f">>> Saving logs into directory: {log_dir}")
+    print(f">>> Saving checkpoints into directory: {ckpt_dir}")
+    print(f">>> Saving videos into directory: {video_dir}")
+
+    if config.experiment.logging.terminal_output_to_txt:
+
+        logger = PrintLogger(os.path.join(log_dir, "log.txt"))
+        sys.stdout = logger
+        sys.stderr = logger
+
+
+    ObsUtils.initialize_obs_utils_with_config(config)
+
+
+    dataset_path = os.path.expanduser(config.train.data)
+    if not os.path.exists(dataset_path):
+        raise FileNotFoundError(f"Dataset at provided path {dataset_path} not found!")
+
+
+    print("\n============= Loaded Environment Metadata =============")
+    env_meta = FileUtils.get_env_metadata_from_dataset(dataset_path=config.train.data)
+    shape_meta = FileUtils.get_shape_metadata_from_dataset(
+        dataset_path=config.train.data, all_obs_keys=config.all_obs_keys, verbose=True
+    )
+
+    if config.experiment.env is not None:
+        env_meta["env_name"] = config.experiment.env
+        print("=" * 30 + "\n" + "Replacing Env to {}\n".format(env_meta["env_name"]) + "=" * 30)
+
+
+    envs = OrderedDict()
+    if config.experiment.rollout.enabled:
+
+        env_names = [env_meta["env_name"]]
+
+        if config.experiment.additional_envs is not None:
+            for name in config.experiment.additional_envs:
+                env_names.append(name)
+
+        for env_name in env_names:
+            env = EnvUtils.create_env_from_metadata(
+                env_meta=env_meta,
+                env_name=env_name,
+                render=False,
+                render_offscreen=config.experiment.render_video,
+                use_image_obs=shape_meta["use_images"],
+            )
+            envs[env.name] = env
+            print(envs[env.name])
+
+    print("")
+
+
+    data_logger = DataLogger(log_dir, config=config, log_tb=config.experiment.logging.log_tb)
+    model = algo_factory(
+        algo_name=config.algo_name,
+        config=config,
+        obs_key_shapes=shape_meta["all_shapes"],
+        ac_dim=shape_meta["ac_dim"],
+        device=device,
+    )
+
+
+    with open(os.path.join(log_dir, "..", "config.json"), "w") as outfile:
+        json.dump(config, outfile, indent=4)
+
+    print("\n============= Model Summary =============")
+    print(model)
+    print("")
+
+
+    trainset, validset = TrainUtils.load_data_for_training(config, obs_keys=shape_meta["all_obs_keys"])
+    train_sampler = trainset.get_dataset_sampler()
+    print("\n============= Training Dataset =============")
+    print(trainset)
+    print("")
+
+
+    obs_normalization_stats = None
+    if config.train.hdf5_normalize_obs:
+        obs_normalization_stats = trainset.get_obs_normalization_stats()
+
+
+    train_loader = DataLoader(
+        dataset=trainset,
+        sampler=train_sampler,
+        batch_size=config.train.batch_size,
+        shuffle=(train_sampler is None),
+        num_workers=config.train.num_data_workers,
+        drop_last=True,
+    )
+
+    if config.experiment.validate:
+
+        num_workers = min(config.train.num_data_workers, 1)
+        valid_sampler = validset.get_dataset_sampler()
+        valid_loader = DataLoader(
+            dataset=validset,
+            sampler=valid_sampler,
+            batch_size=config.train.batch_size,
+            shuffle=(valid_sampler is None),
+            num_workers=num_workers,
+            drop_last=True,
+        )
+    else:
+        valid_loader = None
+
+
+    best_valid_loss = None
+    last_ckpt_time = time.time()
+
+
+    train_num_steps = config.experiment.epoch_every_n_steps
+    valid_num_steps = config.experiment.validation_epoch_every_n_steps
+
+    for epoch in range(1, config.train.num_epochs + 1):
+        step_log = TrainUtils.run_epoch(model=model, data_loader=train_loader, epoch=epoch, num_steps=train_num_steps)
+        model.on_epoch_end(epoch)
+
+
+        epoch_ckpt_name = f"model_epoch_{epoch}"
+
+
+        should_save_ckpt = False
+        if config.experiment.save.enabled:
+            time_check = (config.experiment.save.every_n_seconds is not None) and (
+                time.time() - last_ckpt_time > config.experiment.save.every_n_seconds
+            )
+            epoch_check = (
+                (config.experiment.save.every_n_epochs is not None)
+                and (epoch > 0)
+                and (epoch % config.experiment.save.every_n_epochs == 0)
+            )
+            epoch_list_check = epoch in config.experiment.save.epochs
+            last_epoch_check = epoch == config.train.num_epochs
+            should_save_ckpt = time_check or epoch_check or epoch_list_check or last_epoch_check
+        ckpt_reason = None
+        if should_save_ckpt:
+            last_ckpt_time = time.time()
+            ckpt_reason = "time"
+
+        print(f"Train Epoch {epoch}")
+        print(json.dumps(step_log, sort_keys=True, indent=4))
+        for k, v in step_log.items():
+            if k.startswith("Time_"):
+                data_logger.record(f"Timing_Stats/Train_{k[5:]}", v, epoch)
+            else:
+                data_logger.record(f"Train/{k}", v, epoch)
+
+
+        if config.experiment.validate:
+            with torch.no_grad():
+                step_log = TrainUtils.run_epoch(
+                    model=model, data_loader=valid_loader, epoch=epoch, validate=True, num_steps=valid_num_steps
+                )
+            for k, v in step_log.items():
+                if k.startswith("Time_"):
+                    data_logger.record(f"Timing_Stats/Valid_{k[5:]}", v, epoch)
+                else:
+                    data_logger.record(f"Valid/{k}", v, epoch)
+
+            print(f"Validation Epoch {epoch}")
+            print(json.dumps(step_log, sort_keys=True, indent=4))
+
+
+            valid_check = "Loss" in step_log
+            if valid_check and (best_valid_loss is None or (step_log["Loss"] <= best_valid_loss)):
+                best_valid_loss = step_log["Loss"]
+                if config.experiment.save.enabled and config.experiment.save.on_best_validation:
+                    epoch_ckpt_name += f"_best_validation_{best_valid_loss}"
+                    should_save_ckpt = True
+                    ckpt_reason = "valid" if ckpt_reason is None else ckpt_reason
+
+
+        if should_save_ckpt:
+            TrainUtils.save_model(
+                model=model,
+                config=config,
+                env_meta=env_meta,
+                shape_meta=shape_meta,
+                ckpt_path=os.path.join(ckpt_dir, epoch_ckpt_name + ".pth"),
+                obs_normalization_stats=obs_normalization_stats,
+            )
+
+
+        process = psutil.Process(os.getpid())
+        mem_usage = int(process.memory_info().rss / 1000000)
+        data_logger.record("System/RAM Usage (MB)", mem_usage, epoch)
+        print(f"\nEpoch {epoch} Memory Usage: {mem_usage} MB\n")
+
+
+    data_logger.close()
+
+
+def main(args: argparse.Namespace):
+    """Train a model on a task using a specified algorithm.
+
+    Args:
+        args: Command line arguments.
+    """
+
+    if args.task is not None:
+
+        cfg_entry_point_key = f"robomimic_{args.algo}_cfg_entry_point"
+        task_name = args.task.split(":")[-1]
+
+        print(f"Loading configuration for task: {task_name}")
+        print(gym.envs.registry.keys())
+        print(" ")
+        cfg_entry_point_file = gym.spec(task_name).kwargs.pop(cfg_entry_point_key)
+
+        if cfg_entry_point_file is None:
+            raise ValueError(
+                f"Could not find configuration for the environment: '{task_name}'."
+                f" Please check that the gym registry has the entry point: '{cfg_entry_point_key}'."
+            )
+
+        with open(cfg_entry_point_file) as f:
+            ext_cfg = json.load(f)
+            config = config_factory(ext_cfg["algo_name"])
+
+
+        with config.values_unlocked():
+            config.update(ext_cfg)
+    else:
+        raise ValueError("Please provide a task name through CLI arguments.")
+
+    if args.dataset is not None:
+        config.train.data = args.dataset
+
+    if args.name is not None:
+        config.experiment.name = args.name
+
+    if args.epochs is not None:
+        config.train.num_epochs = args.epochs
+
+
+    config.train.output_dir = os.path.abspath(os.path.join("./logs", args.log_dir, args.task))
+
+    log_dir, ckpt_dir, video_dir = TrainUtils.get_exp_dir(config)
+
+    if args.normalize_training_actions:
+        config.train.data = normalize_hdf5_actions(config, log_dir)
+
+
+    device = TorchUtils.get_torch_device(try_to_use_cuda=config.train.cuda)
+
+    config.lock()
+
+
+    res_str = "finished run successfully!"
+    try:
+        train(config, device, log_dir, ckpt_dir, video_dir)
+    except Exception as e:
+        res_str = f"run failed with error:\n{e}\n\n{traceback.format_exc()}"
+    print(res_str)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+
+    parser.add_argument(
+        "--name",
+        type=str,
+        default=None,
+        help="(optional) if provided, override the experiment name defined in the config",
+    )
+
+
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default=None,
+        help="(optional) if provided, override the dataset path defined in the config",
+    )
+
+    parser.add_argument("--task", type=str, default=None, help="Name of the task.")
+    parser.add_argument("--algo", type=str, default=None, help="Name of the algorithm.")
+    parser.add_argument("--log_dir", type=str, default="robomimic", help="Path to log directory")
+    parser.add_argument("--normalize_training_actions", action="store_true", default=False, help="Normalize actions")
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=None,
+        help=(
+            "Optional: Number of training epochs. If specified, overrides the number of epochs from the JSON training"
+            " config."
+        ),
+    )
+
+    args = parser.parse_args()
+
+
+    main(args)
+
+    simulation_app.close()

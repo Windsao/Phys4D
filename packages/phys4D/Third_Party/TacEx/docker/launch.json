@@ -1,0 +1,101 @@
+
+
+
+
+{
+
+
+
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python Debugger: Attach",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 3000
+            },
+        },
+
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Python: Train Environment",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "--task",
+                "Template-Isaac-Velocity-Flat-Anymal-D-v0",
+                "--num_envs",
+                "4096",
+                "--headless"
+            ],
+            "program": "${workspaceFolder}/scripts/rsl_rl/train.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Python: Play Environment",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "--task",
+                "Template-Isaac-Velocity-Flat-Anymal-D-Play-v0",
+                "--num_envs",
+                "32"
+            ],
+            "program": "${workspaceFolder}/scripts/rsl_rl/play.py",
+            "console": "integratedTerminal",
+        },
+
+        {
+            "name": "Docker: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${env:PYTHONPATH}:${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Docker: Train Environment",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "--task",
+                "Template-Isaac-Velocity-Flat-Anymal-D-v0",
+                "--num_envs",
+                "4096",
+                "--headless"
+            ],
+            "program": "${workspaceFolder}/scripts/rsl_rl/train.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${env:PYTHONPATH}:${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Docker: Play Environment",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "--task",
+                "Template-Isaac-Velocity-Flat-Anymal-D-Play-v0",
+                "--num_envs",
+                "32"
+            ],
+            "program": "${workspaceFolder}/scripts/rsl_rl/play.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${env:PYTHONPATH}:${workspaceFolder}"
+            }
+        }
+    ]
+}

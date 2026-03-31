@@ -1,0 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+mesh:
+  base_scene:
+    pose: [1.5, 0.080, 1.6, 0.043, -0.471, 0.284, 0.834]
+    file_path: "scene/nvblox/srl_ur10_bins.obj"

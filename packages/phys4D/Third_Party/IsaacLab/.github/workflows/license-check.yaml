@@ -1,0 +1,130 @@
+
+
+
+
+
+name: Check Python Dependency Licenses
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  license-check:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+
+
+
+    - name: Clean up disk space
+      run: |
+        rm -rf /opt/hostedtoolcache
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies using ./isaaclab.sh -i
+      run: |
+
+        pip install --upgrade pip
+        pip install 'isaacsim[all,extscache]==${{ vars.ISAACSIM_BASE_VERSION || '5.0.0' }}' --extra-index-url https:
+        chmod +x ./isaaclab.sh
+
+        ./isaaclab.sh -i
+
+    - name: Install pip-licenses
+      run: |
+        pip install pip-licenses
+        pip install -r tools/template/requirements.txt
+        pip install -r docs/requirements.txt
+
+
+    - name: Print License Report
+      run: pip-licenses --from=mixed --format=markdown
+
+
+    - name: Print pipdeptree
+      run: |
+        pip install pipdeptree
+        pipdeptree
+
+    - name: Check licenses against whitelist and exceptions
+      run: |
+
+        ALLOWED_LICENSES="MIT Apache BSD ISC zlib"
+
+
+        EXCEPTIONS_FILE=".github/workflows/license-exceptions.json"
+
+
+        FAILED_PACKAGES=0
+
+
+        pip-licenses --from=mixed --format=json > licenses.json
+
+
+        if ! jq empty licenses.json; then
+          echo "ERROR: Failed to parse pip-licenses output. Exiting..."
+          exit 1
+        fi
+
+
+        IFS=' ' read -r -a allowed_licenses <<< "$ALLOWED_LICENSES"
+
+
+        for pkg in $(jq -r '.[].Name' licenses.json); do
+          LICENSE=$(jq -r --arg pkg "$pkg" '.[] | select(.Name == $pkg) | .License' licenses.json)
+
+
+          match_found=false
+          for allowed_license in "${allowed_licenses[@]}"; do
+            if [[ "$LICENSE" == *"$allowed_license"* ]]; then
+              match_found=true
+              break
+            fi
+          done
+
+          if [ "$match_found" = false ]; then
+
+            EXCEPTION=$(jq -r --arg pkg "$pkg" --arg license "$LICENSE" \
+              '.[] | select(.package == $pkg)' "$EXCEPTIONS_FILE")
+
+
+            if [ -n "$EXCEPTION" ]; then
+
+              EXCEPTION_LICENSE=$(echo "$EXCEPTION" | jq -r '.license')
+
+
+
+
+
+
+              if [ "$EXCEPTION_LICENSE" != "null" ] && [ "$EXCEPTION_LICENSE" != "$LICENSE" ]; then
+                echo "ERROR: $pkg has license: $LICENSE"
+                FAILED_PACKAGES=$((FAILED_PACKAGES + 1))
+              fi
+            else
+
+              echo "ERROR: $pkg has license: $LICENSE"
+              FAILED_PACKAGES=$((FAILED_PACKAGES + 1))
+            fi
+          fi
+        done
+
+
+        if [ "$FAILED_PACKAGES" -gt 0 ]; then
+          echo "ERROR: $FAILED_PACKAGES packages were flagged."
+          exit 1
+        else
+          echo "All packages were checked."
+        fi
